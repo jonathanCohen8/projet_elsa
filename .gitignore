@@ -1,6 +1,9 @@
 #node modules
 node_modules/
 
+#database
+data/*
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
