@@ -9,10 +9,6 @@ function street(x,y){
 		},
 		disableDefaultUI: true
 	};
-
-	//
-	// Attention mec, street c'est aussi une fonction, ça va peut-être causer des problèmes
-	//
 	var street = new google.maps.StreetViewPanorama(document.getElementById('street'), panoramaOptions);
 	
 	//animation
@@ -22,7 +18,7 @@ function street(x,y){
 		var pov = street.getPov();
 		pov.heading += 0.01;
 		street.setPov(pov);
-	}, 2);
+	}, 2); 
 }
 
 function initialize(x,y,acuity,move) {
@@ -42,15 +38,15 @@ function initialize(x,y,acuity,move) {
 		disableDoubleClickZoom: true,
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
+	}
 	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 	
 	//Ajout marker position
 	var icon = {
-		url: '/images/Smiley Angry.png',
-		scaledSize: new google.maps.Size(50, 50),
+		url: 'images/RICK-GRIMES-2.png',
+		scaledSize: new google.maps.Size(60, 50),
 		origin: new google.maps.Point(0,0),
-		anchor: new google.maps.Point(25,25)
+		anchor: new google.maps.Point(30,25)
 	};
 	var marker = new google.maps.Marker({
 		position: myLatlng,
@@ -90,7 +86,7 @@ function initialize(x,y,acuity,move) {
 	var i = 0;
 	var intID = setInterval(function() {
 		var radius = moveCircle.getRadius();
-		if (i === 0) {
+		if (i == 0) {
 			moveCircle.setRadius(radius-0.02);
 			if (radius <= moveRadius-2) {
 				i = 1;
@@ -102,5 +98,5 @@ function initialize(x,y,acuity,move) {
 				i = 0;
 			}
 		}
-	}, 8);
+	}, 8);        
 }
