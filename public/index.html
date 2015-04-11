@@ -4,7 +4,7 @@
 
   <head>
     <title>Projet Elsa</title>
-	<link href="stylesheets/index.css" rel="stylesheet" type="text/css">
+	<link href="css/index.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
@@ -14,10 +14,24 @@
 	</div>
 	<div id="street"></div>
     <div id="map_canvas"></div>
-	<script type="text/javascript" src="javascripts/jquery-2.1.3.min.js"></script>
-	<script type="text/javascript" src="javascripts/google.js"></script>
+	<div id="stats">
+		<div id="stats_first">
+			<img src="img/RICK-GRIMES-2.png" alt="picture">
+			<h2 id="player_name">Rick Grimes</h2>
+		</div>
+		<ul>
+			<h3>Niveau: 3</h3>
+			<li>HP:90/122</li>
+			<li>Fatigue:2/15</li>
+			<li>Endurance:100/100</li>
+			<li>Accuite:15</li>
+			<li>Force:10</li>
+		</ul>
+	</div>
+	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="js/google.js"></script>
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
-	<script type="text/javascript" src="javascripts/index.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
   </body>
 
 </html>
