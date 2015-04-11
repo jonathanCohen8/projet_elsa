@@ -1,8 +1,7 @@
-#node modules
+#node things
+npm-debug.log
 node_modules/
-
-#database
-data/*
+data/
 
 # Windows image file caches
 Thumbs.db

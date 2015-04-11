@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 // Mongo database
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = require('localhost:27017/users');
+var db = monk('localhost:27017/projet_elsa');
 
 var routes = require('./routes/index');
 
@@ -24,6 +24,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Make our db accessible to our router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 
 app.use('/', routes);
 
