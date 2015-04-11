@@ -48,13 +48,18 @@ function initialize(x,y,acuity,move) {
 		origin: new google.maps.Point(0,0),
 		anchor: new google.maps.Point(30,25)
 	};
-	var marker = new google.maps.Marker({
+	var avatar = new google.maps.Marker({
 		position: myLatlng,
 		map: map,
 		icon: icon,
 		scaledSize: new google.maps.Size(20, 20),
 		draggable: false,
 	});
+
+	//Affichage menu au click sur l'avatar
+	google.maps.event.addListener(avatar, 'click', function() {
+	    $('#stats').animate({bottom:0},400);
+  	});
 	
 	//Gestions des distances
 	//Définition des variable

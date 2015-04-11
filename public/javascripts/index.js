@@ -1,5 +1,4 @@
 //Définition variable
-var rotation;
 var joueur1 = {
     x:     45.77832,
     y:   4.86936,
@@ -18,14 +17,6 @@ var joueur1 = {
 	};
 	
 $(document).ready(function() {
-	street(joueur1.x,joueur1.y);
-	$("#run_btn").click(function(){
-		initialize(joueur1.x,joueur1.y,joueur1.acuity,joueur1.move);
-		color_calc();
-		$("#mask").fadeOut("slow", function(){ $("#stats").fadeIn("slow")});
-		clearInterval(rotation);
-		$("#street").remove();
-	});
-	
-	
+	initialize(joueur1.x,joueur1.y,joueur1.acuity,joueur1.move);
+	color_calc();
 });
