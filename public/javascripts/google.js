@@ -90,6 +90,17 @@ function initialize(x,y,acuity,move) {
 		draggable: false,
 	});
 
+	//Ajout marker des autre joueur
+	var player;
+	for (i=0; i<= players.length;i++)
+	{
+		player = new google.maps.Marker({
+			position: new google.maps.LatLng(players[i].x,players[i].y),
+			map: map,
+			label: i,
+			draggable: false,
+		});
+	}
 	//Affichage menu au click sur l'avatar
 	google.maps.event.addListener(avatar, 'click', function() {
 	    $('#stats').animate({bottom:0},400);

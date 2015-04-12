@@ -22,27 +22,6 @@ body
 	z-index:13;
 }
 
-#mask h1{
-	color:white;
-	font-size:100px;
-	text-align:center;
-}
-
-#mask button{
-	font-size:50px;
-	width:500px;
-	position:absolute;
-	left:50%;
-	top:70%;
-	margin-left:-250px;
-	padding:10px;
-	background: #04696B;
-	border:none;
-	color:white;
-	box-shadow:2px 2px 2px 5px rgba(70,70,70,0.3);
-	cursor:pointer;
-}
-
 #street{
 	position:absolute;
 	top:0;
@@ -65,4 +44,36 @@ body
 	-o-filter: sepia(60%);
 	-ms-filter: sepia(60%);
 	filter: sepia(60%);
+}
+
+#mask #form{
+	background:yellow;
+	width: 100%;
+	text-align: center;
+}
+
+#mask input{
+	display: block;
+	text-align: center;
+}
+
+#mask h1{
+	color:white;
+	font-size:100px;
+	text-align:center;
+}
+
+#mask button{
+	font-size:50px;
+	width:500px;
+	position:absolute;
+	left:50%;
+	top:70%;
+	margin-left:-250px;
+	padding:10px;
+	background: #04696B;
+	border:none;
+	color:white;
+	box-shadow:2px 2px 2px 5px rgba(70,70,70,0.3);
+	cursor:pointer;
 }

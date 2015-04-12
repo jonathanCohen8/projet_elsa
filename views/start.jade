@@ -1,13 +1,23 @@
 doctype html
 html
   head
-    title Projet Elsa
+    title Projet Elsa 
     link(href='stylesheets/start.css', rel='stylesheet', type='text/css')
   body
     #mask
       h1 Projet ELSA
-      button#run_btn(type='button', href='index.html') Reprendre la partie
-    #street
+      #form
+        //button#run_btn(type='button', href='index.html') Reprendre la partie
+        input(
+          type='text'
+          name='agreement'
+        )
+        input(
+          type='text'
+          name='agreement'
+        )
+        button#run_btn(type='button', href='index.html') Créer un compte
+     #street
     script(type='text/javascript', src='javascripts/jquery-2.1.3.min.js')
     script(type='text/javascript', src='javascripts/google.js')
     script(type='text/javascript', src='http://maps.google.com/maps/api/js')
