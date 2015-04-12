@@ -13,7 +13,19 @@ var User	= require('../model/User.js');
 
 // GET home page
 router.get('/', function(req, res) {
-	res.render('index', {title : "Projet Elsa"});
+	res.render('index', {title : "Projet Elsa", users:
+		[
+			{
+				name : "John-Bob",
+				x : 45.77832,
+				y : 4.86936
+			}, {
+				name : "Elsa",
+				x : 45.7785,
+				y : 4.875
+			}
+		]
+	});
 });
 
 // GET users list
