@@ -97,7 +97,7 @@ function initialize(x,y,acuity,move) {
 		player = new google.maps.Marker({
 			position: new google.maps.LatLng(players[i].x,players[i].y),
 			map: map,
-			label: i,
+			label: players[i].name,
 			draggable: false,
 		});
 	}
