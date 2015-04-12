@@ -16,10 +16,28 @@ router.get('/', function(req, res) {
 	res.render('index', {title : "Projet Elsa"});
 });
 
+// GET users list
+router.get('/users', function(req, res) {
+	res.status(200).json({ users:
+		[
+			{
+				name : "John-Bob",
+				x : 45.77832,
+				y : 4.86936
+			}, {
+				name : "Elsa",
+				x : 45.7785,
+				y : 4.875
+			}
+		]});
+});
+
 // GET start page
 router.get('/start', function(req, res) {
 	res.render('start');
 });
+
+
 
 //
 // TEST

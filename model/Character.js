@@ -4,6 +4,8 @@
 //
 
 function Character (character_name) {
+	this.x		= null;
+	this.y		= null;
 	this.idUser = null;
 	this.characterName	= character_name;
 	this.equipment = [];
