@@ -8,10 +8,10 @@
 //
 
 function User (user_name) {
-	this.id		= null;
-	this.name	= user_name;
-	this.password = null;
-	this.characters = [];
+	this.id			= null;
+	this.name		= user_name;
+	this.password	= null;
+	this.characters	= null;
 }
 
 User.prototype.getId = function() {

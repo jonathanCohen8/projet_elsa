@@ -18,7 +18,6 @@ var mongoskin    = require('mongoskin');
 
 // Mongo database
 var db = mongoskin.db('mongodb://195.154.71.91:27017/projet_elsa', {native_parser:true});
-// var db = mongoskin.db('mongodb://localhost:27017/projet_elsa', {native_parser:true});
 
 // Express app
 var app = express();
