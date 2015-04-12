@@ -13,11 +13,12 @@ var favicon      = require('static-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
-var mongo        = require('mongoskin');
+var mongoskin    = require('mongoskin');
 
 
 // Mongo database
-var db = mongo.db('mongodb:195.154.71.91:23185/projet_elsa', {native_parser:true});
+var db = mongoskin.db('mongodb://195.154.71.91:27017/projet_elsa', {native_parser:true});
+// var db = mongoskin.db('mongodb://localhost:27017/projet_elsa', {native_parser:true});
 
 // Express app
 var app = express();
