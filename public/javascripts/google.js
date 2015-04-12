@@ -126,23 +126,41 @@ function initialize(x,y,acuity,move) {
 
 	//systeme click map
 	google.maps.event.addListener(map, 'click', function(event) {
-   	placeMarker(event.latLng);
+   	placeMarker(event);
 	});
 
+	google.maps.Circle.prototype.contains = function(latLng) {
+  return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+}
+
 	var target = null;
-	function placeMarker(location) {
+	function placeMarker(event) {
 		if (target !== null) {target.setMap(null);}
     	target = new google.maps.Marker({
-        position: location, 
+        position: event.latLng, 
         map: map
 	    });
-	}
-    //test si compris dans cercle déplacement
+	    //test si compris dans cercle déplacement
+		latLngA = new google.maps.LatLng(target.position.lat(), target.position.lng());
+		$("#action").hide();
+		/*alert((target.getPosition().lat()-x)*(target.getPosition().lat()-x)+(target.getPosition().lng()-y)*(target.getPosition().lng()-y));
+		if((target.getPosition().lat()-x)*(target.getPosition().lat()-x)+(target.getPosition().lng()-y)*(target.getPosition().lng()-y) < (moveCircle.getRadius())*(moveCircle.getRadius())){
+			$("#action").text("Ce déplacer").show();
+			var action_x = event.pixel.x - parseInt($("#action").width())/2;
+			$("#action").css({left:action_x+'px',top:event.pixel.y+'px'});
+		} else alert("yolo");*/
 
+		if(moveCircle.contains(target.position)) {
+			$("#action").text("Ce déplacer").show();
+			var action_x = event.pixel.x - parseInt($("#action").width())/2;
+			$("#action").css({left:action_x+'px',top:event.pixel.y+'px'});
+		}
+	}
+    
 
 	//animation
 	//animation cercle déplacement
-	var i = 0;
+	/*var i = 0;
 	var intID = setInterval(function() {
 		var radius = moveCircle.getRadius();
 		if (i == 0) {
@@ -157,5 +175,5 @@ function initialize(x,y,acuity,move) {
 				i = 0;
 			}
 		}
-	}, 8);        
+	}, 8);     */   
 }
