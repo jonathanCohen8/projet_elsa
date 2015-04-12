@@ -10,7 +10,7 @@ function street(x,y){
 		disableDefaultUI: true
 	};
 	var street = new google.maps.StreetViewPanorama(document.getElementById('street'), panoramaOptions);
-	
+
 	//animation
 	//animation street
 	var j = 0;
@@ -31,6 +31,7 @@ function initialize(x,y,acuity,move) {
 	var mapOptions = {
 		zoom: 19,
 		zoomControl: false,
+		draggable: false,
 		streetViewControl: false,
 		mapTypeControl: false,
 		scrollwheel: false,
@@ -39,9 +40,41 @@ function initialize(x,y,acuity,move) {
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
-	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 	
-	//Ajout marker position
+	//gestion label pour le marker
+	google.maps.Marker.prototype.setLabel = function(label){
+        this.label = new MarkerLabel({
+          map: this.map,
+          marker: this,
+          text: label
+        });
+        this.label.bindTo('position', this, 'position');
+    };
+
+    var MarkerLabel = function(options) {
+        this.setValues(options);
+        this.span = document.createElement('span');
+        this.span.className = 'map-marker-label';
+    };
+
+    MarkerLabel.prototype = $.extend(new google.maps.OverlayView(), {
+        onAdd: function() {
+            this.getPanes().overlayImage.appendChild(this.span);
+            var self = this;
+            this.listeners = [
+            google.maps.event.addListener(this, 'position_changed', function() { self.draw();    })];
+        },
+        draw: function() {
+            var text = String(this.get('text'));
+            var position = this.getProjection().fromLatLngToDivPixel(this.get('position'));
+            this.span.innerHTML = text;
+            this.span.style.left = (position.x -10) - (text.length * 3) + 10 + 'px';
+            this.span.style.top = (position.y + 25) + 'px';
+        }
+    });
+
+	//Ajout marker joueur
 	var icon = {
 		url: 'images/RICK-GRIMES-2.png',
 		scaledSize: new google.maps.Size(60, 50),
@@ -52,6 +85,7 @@ function initialize(x,y,acuity,move) {
 		position: myLatlng,
 		map: map,
 		icon: icon,
+		label: 'Vous',
 		scaledSize: new google.maps.Size(20, 20),
 		draggable: false,
 	});
@@ -59,8 +93,9 @@ function initialize(x,y,acuity,move) {
 	//Affichage menu au click sur l'avatar
 	google.maps.event.addListener(avatar, 'click', function() {
 	    $('#stats').animate({bottom:0},400);
+	    $('#timer').animate({bottom:-200},400);
   	});
-	
+
 	//Gestions des distances
 	//Définition des variable
 	var AcuityOption = {
@@ -70,7 +105,9 @@ function initialize(x,y,acuity,move) {
 		fillOpacity: 0.35,
 		map: map,
 		center:myLatlng,
+		clickable: false,
 		radius: acuity*15
+
 	};
 	
 	var moveOption = {
@@ -79,13 +116,30 @@ function initialize(x,y,acuity,move) {
 		fillOpacity: 0.1,
 		map: map,
 		center:myLatlng,
+		clickable: false,
 		radius: moveRadius
 	};
 	
 	//Ajout des cercle sur la carte
 	var acuityCircle = new google.maps.Circle(AcuityOption);
 	var moveCircle = new google.maps.Circle(moveOption);
-	
+
+	//systeme click map
+	google.maps.event.addListener(map, 'click', function(event) {
+   	placeMarker(event.latLng);
+	});
+
+	var target = null;
+	function placeMarker(location) {
+		if (target !== null) {target.setMap(null);}
+    	target = new google.maps.Marker({
+        position: location, 
+        map: map
+	    });
+	}
+    //test si compris dans cercle déplacement
+
+
 	//animation
 	//animation cercle déplacement
 	var i = 0;
