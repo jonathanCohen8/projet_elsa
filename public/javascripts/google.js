@@ -92,7 +92,7 @@ function initialize(x,y,acuity,move) {
 
 	//Ajout marker des autre joueur
 	var player;
-	for (i=0; i<= players.length;i++)
+	for (i=0; i< players.length;i++)
 	{
 		player = new google.maps.Marker({
 			position: new google.maps.LatLng(players[i].x,players[i].y),

@@ -26,12 +26,25 @@ function color_timer(){
 	meta2.css("background-image", "linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
 }
 
+//Initialisation
 $(document).ready(function() {
 	initialize(joueur1.x,joueur1.y,joueur1.acuity,joueur1.move);
 	color_calc();
 	color_timer();
 	$("#close_stats").click(function(){
 		$('#stats').animate({bottom:-450},400);
+		$('#timer').animate({bottom:0},400);
+	});
+
+	//Au click sur l'inventaire
+	$('.action').click(function() {
+		$('#equipment').animate({bottom:0},400);
+	    $('#timer').animate({bottom:-200},400);
+	});
+
+	//Au click sur l'inventaire
+	$('#close_bag').click(function() {
+		$('#equipment').animate({bottom:-450},400);
 		$('#timer').animate({bottom:0},400);
 	});
 });
