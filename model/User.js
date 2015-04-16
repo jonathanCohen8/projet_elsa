@@ -7,11 +7,12 @@
 // User module
 //
 
-function User (user_name) {
+function User (username, password, mail) {
 	this.id			= null;
-	this.name		= user_name;
-	this.password	= null;
-	this.characters	= null;
+	this.name		= username;
+	this.password	= password;
+	this.mail		= mail;
+	this.characters	= [];
 }
 
 User.prototype.getId = function() {
