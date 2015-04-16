@@ -170,8 +170,33 @@ body
 }
 #equipment tr td{
 	border:solid 1px grey;
-	height:30px;
-	width: 30px;
+	height:40px;
+	width: 40px;
+}
+
+#object1{
+	position:absolute;
+	left:4px;
+	top:4px;
+	width:80px;
+	height:80px;
+	border: solid 1px black;
+}
+
+#object2{
+	position:absolute;
+	left:4px;
+	top:4px;
+	width:38px;
+	height:80px;
+	border: solid 1px black;
+}
+
+.over {
+	background: rgba(255, 0, 0, 0.5) !important;
+}
+.under {
+	background: rgba(0, 255, 0, 0.5) !important;
 }
 
 @media screen and (min-width: 780px){

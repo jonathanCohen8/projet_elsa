@@ -38,7 +38,15 @@ function initialize(x,y,acuity,move) {
 		panControl: false,
 		disableDoubleClickZoom: true,
 		center: myLatlng,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		styles: [
+		{
+		"stylers": [
+			{ "saturation": -78 },
+			{ "gamma": 0.6 },
+			{ "lightness": 20 }
+		]}
+		]
 	}
 	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 	
@@ -141,7 +149,8 @@ function initialize(x,y,acuity,move) {
 	});
 
 	google.maps.Circle.prototype.contains = function(latLng) {
-  return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+  	return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+
 }
 
 	var target = null;
