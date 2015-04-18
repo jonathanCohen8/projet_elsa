@@ -14,10 +14,12 @@ var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var mongoskin    = require('mongoskin');
+var passport     = require('passport');
+var Strategy     = require('passport-local').Strategy;
 
 
 // Mongo database
-var db = mongoskin.db('mongodb://195.154.71.91:27017/projet_elsa', {native_parser:true});
+var db = mongoskin.db('mongodb://195.154.71.91:27017/projet_elsa', {native_parser : true});
 
 // Express app
 var app = express();
@@ -46,17 +48,16 @@ var users = require('./routes/users');
 app.use('/', routes);
 app.use('/', users);
 
-/// catch 404 and forward to error handler
+/// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
-/// error handlers
 
-// development error handler
-// will print stacktrace
+// Development error handler
+// Will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
@@ -67,8 +68,8 @@ if (app.get('env') === 'development') {
     });
 }
 
-// production error handler
-// no stacktraces leaked to user
+// Production error handler
+// No stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {

@@ -17,6 +17,7 @@ router.get('/', function(req, res) {
 		title : "Projet Elsa",
 		current_user : [
 			{
+				id : 1,
 				name : "John-Bob",
 				x : 45.7787,
 				y : 4.86865,
@@ -25,12 +26,14 @@ router.get('/', function(req, res) {
 						id		: 1,
 						name	: 'Automatic American Rifle 1992',
 						type	: 'weapon',
+						size	: [2,2], // [width, heigh]
 						picture	: null
 					},
 					{
 						id		: 2,
-						name	: 'Helmet firefighter',
-						type	: 'defense',
+						name	: 'Swiss Army knife',
+						type	: 'weapon',
+						size	: [1,2],
 						picture	: null
 					}
 				],
@@ -39,6 +42,7 @@ router.get('/', function(req, res) {
 		],
 		users: [
 			{
+				id : 2,
 				name : "Elsa",
 				x : 45.779,
 				y : 4.8689
