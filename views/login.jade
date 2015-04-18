@@ -1,11 +1,13 @@
 extends layout
 
 block content
-    h1 Login
+    h1 Connexion
     br
     form(role='form', action="/login",method="post", style='max-width: 300px;')
       input(type='text', name="username", placeholder='Enter Username')
       br
       input(type='password', name="password", placeholder='Password')
       br
-      button(type='submit') Submit
+      button(type='submit') Envoyer
+    br
+    a(href='/register') Inscription

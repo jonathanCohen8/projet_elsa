@@ -12,46 +12,10 @@ var passport	= require('passport');
 var User		= require('../model/User.js');
 var router		= express.Router();
 
-// GET register page
-router.get('/register', function(req, res) {
-    res.render('register', {});
-});
-
-// POST a new user
-router.post('/register', function(req, res) {
-    User.register(new User(
-		{
-			username : req.body.username,
-			mail : req.body.mail
-		}), req.body.password, function(err, account) {
-        if (err) {
-          return res.render("register", {info: "Désolé. Ce nom d'utilisateur est existe déjà."});
-        }
-
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
-        });
-    });
-});
-
-// GET login page
-router.get('/login', function(req, res) {
-    res.render('login', { user : req.user });
-});
-
-// POST to log in
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-});
-
-// GET logout page
-router.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
 // GET map page
 router.get('/', function(req, res) {
+	if(!req.user) return res.render('login');
+
 	res.render('index', {
 		user : req.user,
 		title : "Projet Elsa",
@@ -63,25 +27,25 @@ router.get('/', function(req, res) {
 				y : 4.86865,
 				inventory : [
 					{
-						id		: 1,
+						bag_id	: 1,
 						name	: 'Automatic American Rifle 1992',
 						type	: 'weapon',
 						size	: [2,2], // [width, heigh]
-						picture	: null
+						picture	: 'automatic_american_riffle_1992.png'
 					},
 					{
-						id		: 2,
+						bag_id	: 2,
 						name	: 'Swiss Army knife',
 						type	: 'weapon',
 						size	: [1,2],
-						picture	: null
+						picture	: 'swiss_army_knife.png'
 					},
 					{
-						id		: 3,
-						name	: 'Satelite phone',
+						bag_id	: 3,
+						name	: 'Satellite phone',
 						type	: 'telecommunications',
 						size	: [1,2],
-						picture	: null
+						picture	: 'satellite_phone.png'
 					}
 				],
 				bag : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
@@ -103,9 +67,44 @@ router.get('/', function(req, res) {
 //	res.render('start');
 // });
 
-// GET ping test
-router.get('/ping', function(req, res){
-    res.status(200).send("pong!");
+// GET register page
+router.get('/register', function(req, res) {
+    res.render('register', {});
+});
+
+// POST a new user
+router.post('/register', function(req, res) {
+    User.register(new User(
+		{
+			username	: req.body.username,
+			mail		: req.body.mail
+		}), req.body.password, function(err) {
+        if (err) {
+          return res.render("register", {info: "Désolé. Cet utilisateur existe déjà."});
+        }
+
+        passport.authenticate('local')(req, res, function () {
+            res.redirect('/');
+        });
+    });
+});
+
+// GET login page
+router.get('/login', function(req, res) {
+	console.log(req.user);
+	res.render('login', { user : req.user });
+});
+
+// POST to log in
+router.post('/login', passport.authenticate('local'), function(req, res) {
+    res.redirect('/');
+});
+
+// GET logout page
+router.get('/logout', function(req, res) {
+	console.log(req.user);
+    req.logout();
+    res.redirect('/login');
 });
 
 module.exports = router;

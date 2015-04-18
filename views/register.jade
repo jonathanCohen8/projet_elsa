@@ -1,8 +1,9 @@
 extends layout
 
 block content
-    h1 Register
+    h1 Inscription
     br
+    span= info
     form(role='form', action="/register",method="post")
       input(type='text', name="username", placeholder='Enter Username')
       br
@@ -10,6 +11,6 @@ block content
       br
       input(type='password', name="password", placeholder='Password')
       br
-      button(type='submit') Submit
+      button(type='submit') Envoyer
     br
-    h4= info
+    a(href='/login') Connexion

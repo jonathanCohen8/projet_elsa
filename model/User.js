@@ -8,15 +8,12 @@
 //
 
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Character = require('./Character.js');
 var passportLocalMongoose = require('passport-local-mongoose');
 
-var User = new Schema({
+var User = new mongoose.Schema({
 	name		: String,
 	password	: String,
-	mail		: String,
-	characters	: Character,
+	mail		: String
 });
 
 User.plugin(passportLocalMongoose);

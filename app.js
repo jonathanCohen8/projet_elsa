@@ -19,7 +19,8 @@ var Strategy     = require('passport-local').Strategy;
 
 
 // Mongo database
-var db = mongoose.connect('mongodb://195.154.71.91:27017/projet_elsa');
+mongoose.connect('mongodb://195.154.71.91:27017/projet_elsa');
+var db = mongoose.connection;
 
 
 // Express app
@@ -82,7 +83,6 @@ if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
-            message: err.message,
             error: err
         });
     });
