@@ -7,6 +7,7 @@ function Character (character_name) {
 	this.x		= null;
 	this.y		= null;
 	this.idUser = null;
+	this.level	= 1;
 	this.characterName	= character_name;
 	this.equipment = [];
 	this.features = {
@@ -16,7 +17,3 @@ function Character (character_name) {
 		strengh		: 0
 	};
 }
-
-User.prototype.getId = function() {
-	return this.id;
-};

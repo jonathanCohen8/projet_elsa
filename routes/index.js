@@ -7,13 +7,53 @@
 // Router
 //
 
-var express	= require('express');
-var router	= express.Router();
-var User	= require('../model/User.js');
+var express		= require('express');
+var passport	= require('passport');
+var User		= require('../model/User.js');
+var router		= express.Router();
 
-// GET home page
+// GET register page
+router.get('/register', function(req, res) {
+    res.render('register', {});
+});
+
+// POST a new user
+router.post('/register', function(req, res) {
+    User.register(new User(
+		{
+			username : req.body.username,
+			mail : req.body.mail
+		}), req.body.password, function(err, account) {
+        if (err) {
+          return res.render("register", {info: "Désolé. Ce nom d'utilisateur est existe déjà."});
+        }
+
+        passport.authenticate('local')(req, res, function () {
+            res.redirect('/');
+        });
+    });
+});
+
+// GET login page
+router.get('/login', function(req, res) {
+    res.render('login', { user : req.user });
+});
+
+// POST to log in
+router.post('/login', passport.authenticate('local'), function(req, res) {
+    res.redirect('/');
+});
+
+// GET logout page
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
+// GET map page
 router.get('/', function(req, res) {
 	res.render('index', {
+		user : req.user,
 		title : "Projet Elsa",
 		current_user : [
 			{
@@ -38,7 +78,7 @@ router.get('/', function(req, res) {
 					},
 					{
 						id		: 3,
-						name	: 'Satelitte phone',
+						name	: 'Satelite phone',
 						type	: 'telecommunications',
 						size	: [1,2],
 						picture	: null
@@ -59,8 +99,13 @@ router.get('/', function(req, res) {
 });
 
 // GET start page
-router.get('/start', function(req, res) {
-	res.render('start');
+// router.get('/start', function(req, res) {
+//	res.render('start');
+// });
+
+// GET ping test
+router.get('/ping', function(req, res){
+    res.status(200).send("pong!");
 });
 
 module.exports = router;
