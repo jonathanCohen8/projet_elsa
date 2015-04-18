@@ -35,9 +35,16 @@ router.get('/', function(req, res) {
 						type	: 'weapon',
 						size	: [1,2],
 						picture	: null
+					},
+					{
+						id		: 3,
+						name	: 'Satelitte phone',
+						type	: 'telecommunications',
+						size	: [1,2],
+						picture	: null
 					}
 				],
-				bag : [[0,0,0,0],[0,0,0,0],[1,1,0,2],[1,1,0,2]]
+				bag : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
 			}
 		],
 		users: [
