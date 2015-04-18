@@ -176,8 +176,8 @@ body
 
 #object1{
 	position:absolute;
-	left:4px;
-	top:4px;
+	left:0px;
+	top:0px;
 	width:80px;
 	height:80px;
 	border: solid 1px black;
@@ -185,8 +185,8 @@ body
 
 #object2{
 	position:absolute;
-	left:4px;
-	top:4px;
+	left:0px;
+	top:0px;
 	width:38px;
 	height:80px;
 	border: solid 1px black;

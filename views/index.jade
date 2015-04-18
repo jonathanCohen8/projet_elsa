@@ -21,13 +21,13 @@ html
         h4 Sac de fortune
         a#close_bag X
         table#table1
-          img.draggable.ui-widget-content#object1(src='images/pompier.png', alt='pompier')
-          img.draggable.ui-widget-content#object2(src='images/bottle.png', alt='bottle')
-          - for (var j = 0; j < 4; j++){
+          img.draggable.ui-widget-content#object1(src='images/pompier.png', alt='pompier', data-objectId='1')
+          img.draggable.ui-widget-content#object2(src='images/bottle.png', alt='bottle', data-objectId='2')
+          - for (var i = 0; i < 4; i++){
             tr
-            - for (var i = 0; i < 4; ++i) {
-              td
-            - }
+              - for (var j = 0; j < 4; j++) {
+                td 0
+              - }
           - }
         p#debug
     p#timer Temps restant avant prochain tour: 10 minutes
@@ -47,4 +47,5 @@ html
     script(type='text/javascript', src='javascripts/index.js')
 
     script(type='text/javascript').
+      var user = !{JSON.stringify(current_user).replace(/<\//g, "<\\/")}
       var players = !{JSON.stringify(users).replace(/<\//g, "<\\/")}
