@@ -23,6 +23,7 @@
     "passport-local-mongoose": "^1.0.0",
     "should": "~2.1.0",
     "serve-favicon": "^2.2.0",
+    "socket.io": "*",
     "debug": "^2.1.1"
   }
 }

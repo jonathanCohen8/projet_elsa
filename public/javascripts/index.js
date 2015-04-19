@@ -16,7 +16,7 @@ function color_calc(){
 	meta.css("background-image", "-o-linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
 	meta.css("background-image", "linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
 };
-	
+
 //Fonction de calcule du dégrader du timer
 function color_timer(){
 	var meta2 = $("#timer");
@@ -43,14 +43,14 @@ function color_timer(){
 		var bag_size = table.length
 		//On va lire le tableau et déposer les objet
 		for (var i=0 ; i<bag_size ; i++) {
-			for (var j=0 ;j<bag_size ; j++) { 
+			for (var j=0 ;j<bag_size ; j++) {
 				if (table[i][j] !== 0)
 				{
 					var y = 0;
 					for (var k=0 ; k< inv_check.length ; k++) {
 						if (inv_check[k] === table[i][j]){
 							y = 1;
-						} 
+						}
 					}
 					if (y === 0){
 						inv_check.push(table[i][j]);
@@ -76,7 +76,7 @@ function color_timer(){
 		});
 
 		$("#dragMe").draggable();
-				
+
 		//On execute la fonction pour chaque objet de l'inventaire
 		collide(box1,1,table);
 		collide(box2,2,table);
@@ -88,7 +88,7 @@ function color_timer(){
 		$(box).on('mousedown', function(e) {
 			//On supprime du tableau table les case contenant le meme id que l'objet clicker
 			for (var i=0 ; i<table.length ; i++) {
-				for (var j=0 ; j<table.length ; j++) { 
+				for (var j=0 ; j<table.length ; j++) {
 					if(table[i][j] === id)
 						table[i][j] = 0;
 					}
@@ -103,7 +103,7 @@ function color_timer(){
 						$(this).html(0);
 					}
 				});
-				
+
 				//Execution plugins jquery overlaps
 				var collides = drop.overlaps(box);
 				$(box)[collides.hits.length ? 'addClass' : 'removeClass']('over');
@@ -121,7 +121,7 @@ function color_timer(){
 
 				//On lit le tableau (tbl) et on le compare avec celui en mémoire (table)
 				for (var i=0 ; i<table.length ; i++) {
-					for (var j=0 ; j<table.length ; j++) { 
+					for (var j=0 ; j<table.length ; j++) {
 						if (tbl[i][j] !== table[i][j]){
 							if (table[i][j] === 0)
 								table[i][j] = tbl[i][j];

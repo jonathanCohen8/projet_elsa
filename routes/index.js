@@ -14,7 +14,7 @@ var router		= express.Router();
 
 // GET map page
 router.get('/', function(req, res) {
-	if(!req.user) return res.render('login');
+	if(!req.user) return res.redirect('/login');
 
 	res.render('index', {
 		user : req.user,
