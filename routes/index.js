@@ -28,24 +28,24 @@ router.get('/', function(req, res) {
 				inventory : [
 					{
 						bag_id	: 1,
-						name	: 'Automatic American Rifle 1992',
+						name	: 'P226',
 						type	: 'weapon',
 						size	: [2,2], // [width, heigh]
-						picture	: 'automatic_american_riffle_1992.png'
+						picture	: 'P226.png'
 					},
 					{
 						bag_id	: 2,
 						name	: 'Swiss Army knife',
 						type	: 'weapon',
 						size	: [1,2],
-						picture	: 'swiss_army_knife.png'
+						picture	: 'swiss.png'
 					},
 					{
 						bag_id	: 3,
 						name	: 'Satellite phone',
 						type	: 'telecommunications',
 						size	: [1,2],
-						picture	: 'satellite_phone.png'
+						picture	: 'phone.png'
 					}
 				],
 				bag : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]

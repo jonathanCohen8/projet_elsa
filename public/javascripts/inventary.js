@@ -1,17 +1,28 @@
-//Fonction inventaire
+//------------------------------------Fonction inventaire------------------------------------//
+
+//Définition variable globales
+var revert = false;
+
 function inventory(user) {
 	//Définition variable de départ
-	var box1 = '#object1',
-		box2 = '#object2',
-		inv = '#table1',
+	var inv = '#bag_content',
 		inv_check = [],
-		table = user[0].bag,
+		object_in_bag = user[0].inventory,
 		cell_size = 43;
 
 	// Positionnement initial des objets
 	//On recupere les coordonnées de la grille
 	invPos= $(inv).position();
 	var bag_size = table.length
+	//On dépose les objet
+	for (var i=0; i < object_in_bag.length; i++){
+		$(inv).prepend("<img src='images/"+object_in_bag[i].picture+"' alt='"+object_in_bag[i].picture+"' data-objectId='"+object_in_bag[i].bag_id+"' class='draggable ui-widget-content'/>")
+	}
+	//On redimensionne les objet d'apres leur tailles
+	for (var i=0; i < object_in_bag.length; i++){
+		$('img[data-objectId='+object_in_bag[i].bag_id+']').css('width',38*object_in_bag[i].size[0]);
+		$('img[data-objectId='+object_in_bag[i].bag_id+']').css('height',40*object_in_bag[i].size[1]);
+	}
 	//On va lire le tableau et déposer les objet
 	for (var i=0 ; i<bag_size ; i++) {
 		for (var j=0 ;j<bag_size ; j++) {
@@ -25,6 +36,7 @@ function inventory(user) {
 				}
 				if (y === 0){
 					inv_check.push(table[i][j]);
+					//On positionne un à un les objets
 					$('img[data-objectId='+table[i][j]+']').css('left',invPos.left + 4 + (cell_size * j));
 					$('img[data-objectId='+table[i][j]+']').css('top',invPos.top + 4 + (cell_size * i));
 				}
@@ -32,25 +44,40 @@ function inventory(user) {
 		}
 	}
 
-	//On rend l'objet draggable
-	$(box1).draggable({ grid: [ cell_size, cell_size ] },
-	{
-	    obstacle: "#object2",
-	    preventCollision: true,
-	    containment: "#table1"
-	});
-	$(box2).draggable({ grid: [ cell_size, cell_size ] },
-	{
-	    obstacle: "#object1",
-	    preventCollision: true,
-	    containment: "#table1"
-	});
-
-	$("#dragMe").draggable();
+	//On rend l'objet draggable et on gère les collision
+	$(inv).droppable({
+            tolerance: 'fit'
+    });
+    $('.draggable').draggable({
+            zIndex: 2700,
+            grid: [43,43],
+            containment:inv,
+            scroll: false,
+            revert: 'invalid',
+            stop: function(){
+                $(this).draggable('option','revert','invalid');
+                setTimeout(function(){ revert = false; },1);
+            }
+    });
+    $('.draggable').droppable({
+            greedy: true,
+            tolerance: 'touch',
+            drop: function(event,ui){
+                ui.draggable.draggable('option','revert',true);
+                revert = true;
+            }
+    });
+    //Correction bug jqueryUI
+    $( ".draggable" ).bind( "dragstart", function(event, ui) {
+            ui.originalPosition.top = $(this).position().top;
+            ui.originalPosition.left = $(this).position().left;
+    });
 
 	//On execute la fonction pour chaque objet de l'inventaire
-	collide(box1,1,table);
-	collide(box2,2,table);
+	for (var i=0; i < object_in_bag.length; i++){
+		collide('img[data-objectId='+object_in_bag[i].bag_id+']',object_in_bag[i].bag_id,table);
+	}
+	
 }
 
 //Gestion collision des objets
@@ -64,9 +91,11 @@ function collide(box, id, table){
 					table[i][j] = 0;
 				}
 		}
+
+		//Au mouvement de la souris
 		$(document).on('mousemove', function(e) {
 			//Gestion de l'identifiant dans la table HTML
-			$('#table1').find("tr").find("td").each(function(){
+			$('#bag_content').find("tr").find("td").each(function(){
 				if ($(this).hasClass('under') === true){
 					$(this).html(id);
 				}
@@ -81,25 +110,29 @@ function collide(box, id, table){
 			drop.removeClass('under');
 			$(collides.targets).addClass('under');
 
+		//Au relacher de la souris
 		}).on('mouseup', function() {
 			$(this).off('mousemove');
-			//Creation du tableau de valeur représentant la "carte"
-			var tbl = $('#table1 tr').get().map(function(row) {
-				return $(row).find('td').get().map(function(cell) {
-					return parseInt($(cell).html());
-				});
-			});
-
-			//On lit le tableau (tbl) et on le compare avec celui en mémoire (table)
-			for (var i=0 ; i<table.length ; i++) {
-				for (var j=0 ; j<table.length ; j++) {
-					if (tbl[i][j] !== table[i][j]){
-						if (table[i][j] === 0)
-							table[i][j] = tbl[i][j];
+			setTimeout(function(){
+				if (revert === false){
+					//Creation du tableau de valeur représentant la "carte"
+					var tbl = $('#bag_content tr').get().map(function(row) {
+						return $(row).find('td').get().map(function(cell) {
+							return parseInt($(cell).html());
+						});
+					});
+					//On lit le tableau (tbl) et on le compare avec celui en mémoire (table)
+					for (var i=0 ; i<table.length ; i++) {
+						for (var j=0 ; j<table.length ; j++) {
+							if (tbl[i][j] !== table[i][j]){
+								if (table[i][j] === 0)
+									table[i][j] = tbl[i][j];
+							}
+						}
 					}
+					$("#debug").html(JSON.stringify(table));
 				}
-			}
-			$("#debug").html(JSON.stringify(table));
+			},1);
 		});
 		e.preventDefault();
 	});

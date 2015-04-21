@@ -5,6 +5,7 @@ html
     link(href='stylesheets/index.css', rel='stylesheet', type='text/css')
   body
     #map_canvas
+    #mouse_context
     #stats
       #stats_first
         a#close_stats X
@@ -20,9 +21,7 @@ html
       #bag
         h4 Sac de fortune
         a#close_bag X
-        table#table1
-          img.draggable.ui-widget-content#object1(src='images/pompier.png', alt='pompier', data-objectId='1')
-          img.draggable.ui-widget-content#object2(src='images/bottle.png', alt='bottle', data-objectId='2')
+        table#bag_content
           - for (var i = 0; i < 4; i++){
             tr
               - for (var j = 0; j < 4; j++) {
@@ -34,11 +33,17 @@ html
     ul#action_bar
       li.action
         img(src='images/bag.png', alt='bag')
+
+    script(type='text/javascript').
+      var user = !{JSON.stringify(current_user).replace(/<\//g, "<\\/")}
+      var players = !{JSON.stringify(users).replace(/<\//g, "<\\/")}
+
     script(type='text/javascript', src='javascripts/jquery-2.1.3.min.js')
     script(type='text/javascript', src='ui/jquery.ui.core.js')
     script(type='text/javascript', src='ui/jquery.ui.widget.js')
     script(type='text/javascript', src='ui/jquery.ui.mouse.js')
     script(type='text/javascript', src='ui/jquery.ui.draggable.js')
+    script(type='text/javascript', src='ui/jquery.ui.droppable.js')
     script(type='text/javascript', src='javascripts/jquery.overlaps.js')
     script(type='text/javascript', src='javascripts/jquery-collision.min.js')
     script(type='text/javascript', src='javascripts/jquery-ui-draggable-collision.min.js')
@@ -46,8 +51,5 @@ html
     script(type='text/javascript', src='http://maps.google.com/maps/api/js')
     script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', src='javascripts/inventary.js')
+    script(type='text/javascript', src='javascripts/ui.js')
     script(type='text/javascript', src='javascripts/index.js')
-
-    script(type='text/javascript').
-      var user = !{JSON.stringify(current_user).replace(/<\//g, "<\\/")}
-      var players = !{JSON.stringify(users).replace(/<\//g, "<\\/")}

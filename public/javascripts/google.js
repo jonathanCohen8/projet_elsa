@@ -160,20 +160,13 @@ function initialize(x,y,acuity,move) {
         position: event.latLng, 
         map: map
 	    });
+	   	var action_x = event.pixel.x - parseInt($("#mouse_context").width())/2;
 	    //test si compris dans cercle déplacement
 		latLngA = new google.maps.LatLng(target.position.lat(), target.position.lng());
-		$("#action").hide();
-		/*alert((target.getPosition().lat()-x)*(target.getPosition().lat()-x)+(target.getPosition().lng()-y)*(target.getPosition().lng()-y));
-		if((target.getPosition().lat()-x)*(target.getPosition().lat()-x)+(target.getPosition().lng()-y)*(target.getPosition().lng()-y) < (moveCircle.getRadius())*(moveCircle.getRadius())){
-			$("#action").text("Ce déplacer").show();
-			var action_x = event.pixel.x - parseInt($("#action").width())/2;
-			$("#action").css({left:action_x+'px',top:event.pixel.y+'px'});
-		} else alert("yolo");*/
-
+		$("#mouse_context").hide();
 		if(moveCircle.contains(target.position)) {
-			$("#action").text("Ce déplacer").show();
-			var action_x = event.pixel.x - parseInt($("#action").width())/2;
-			$("#action").css({left:action_x+'px',top:event.pixel.y+'px'});
+			$("#mouse_context").text("Ce déplacer ici").show();
+			$("#mouse_context").css({left:action_x+'px',top:event.pixel.y+3+'px'});
 		}
 	}
     

@@ -5,50 +5,25 @@ var joueur1 = {
     acuity: 3,
     move:2
 };
-
-
-//Fonction calcule dégrader des statistiques
-function color_calc(){
-	var meta = $("#stats #stats_percent li");
-	meta.css("background-image", "-webkit-gradient(linear, 70% 0%, 30% 30%, color-stop(70%, #5F4EED), color-stop(30%, #ABA4ED))");
-	meta.css("background-image", "-webkit-linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
-	meta.css("background-image", "-moz-linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
-	meta.css("background-image", "-o-linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
-	meta.css("background-image", "linear-gradient(to right, #5F4EED 70%,#ABA4ED 30%)");
-};
-
-//Fonction de calcule du dégrader du timer
-function color_timer(timer){
-	var meta2 = $("#timer");
-	console.log(timer + ' / '+ (100-timer));
-	if (timer >= 50){
-		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + (100-timer) + "% " + (100-timer) + "%, color-stop("+ timer + "%, #5F4EED), color-stop(" + (100-timer) + "%, #ABA4ED))");
-		meta2.css("background-image", "-webkit-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
-		meta2.css("background-image", "-moz-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
-		meta2.css("background-image", "-o-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
-		meta2.css("background-image", "linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
-	}
-	else{
-		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + timer + "% " + timer + "%, color-stop("+ timer + "%, #5F4EED), color-stop(" + timer + "%, #ABA4ED))");
-		meta2.css("background-image", "-webkit-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
-		meta2.css("background-image", "-moz-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
-		meta2.css("background-image", "-o-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
-		meta2.css("background-image", "linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
-	}
-}
-
+var table = user[0].bag;
 
 //Initialisation
 $(document).ready(function() {
+	//On initialise la map google
 	initialize(joueur1.x,joueur1.y,joueur1.acuity,joueur1.move);
+
 	//Connection au socket io
 	var socket = io.connect('http://localhost:3000');
 	socket.on('timer', function(timer) {
+		//Execution de l'affichage du timer en temps réel
 		$("#timer").html('Temps restant avant prochain tour: ' + timer.timer + ' secondes');
-		color_timer(timer.timer*10);
+		color_timer(Math.round((timer.timer*100)/timer.max));
     })
 
+	//Colorisation fiche statistique
 	color_calc();
+
+	//Au click sur la croix des statistiques (Mobile seul)
 	$("#close_stats").click(function(){
 		$('#stats').animate({bottom:-450},400);
 		$('#timer').animate({bottom:0},400);
@@ -66,5 +41,12 @@ $(document).ready(function() {
 	$('#close_bag').click(function() {
 		$('#equipment').animate({bottom:-450},400);
 		$('#timer').animate({bottom:0},400);
+		//Requete ajax de l'envoie de la nouvelle organisation du sac
+		$.ajax({
+			url : 'bag_organize.php',
+			type : 'POST',
+			contentType: "application/json",
+			data : 'bag=' + JSON.stringify(table)
+    	});
 	});
 });
