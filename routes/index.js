@@ -56,55 +56,71 @@ router.get('/', function(req, res) {
 				id : 2,
 				name : "Elsa",
 				x : 45.779,
-				y : 4.8689
+				y : 4.8688
 			}
 		]
 	});
 });
 
 // GET start page
-// router.get('/start', function(req, res) {
-//	res.render('start');
-// });
+/*router.get('/start', function(req, res) {
+	res.render('start');
+});*/
 
-// GET register page
-router.get('/register', function(req, res) {
-    res.render('register', {});
+
+//
+// Registration route
+//
+router.route('/register')
+
+	// GET register page
+	.get(function(req, res) {
+		res.render('register', {});
+	})
+
+	// POST a new user
+	.post(function(req, res) {
+		User.register(new User(
+			{
+				username	: req.body.username,
+				mail		: req.body.mail
+			}), req.body.password, function(err) {
+			if (err) {
+				return res.render("register", {info: "Désolé. Cet utilisateur existe déjà."});
+			}
+
+			passport.authenticate('local')(req, res, function () {
+				res.redirect('/');
+			});
+		});
 });
 
-// POST a new user
-router.post('/register', function(req, res) {
-    User.register(new User(
-		{
-			username	: req.body.username,
-			mail		: req.body.mail
-		}), req.body.password, function(err) {
-        if (err) {
-          return res.render("register", {info: "Désolé. Cet utilisateur existe déjà."});
-        }
 
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
-        });
-    });
-});
+//
+// Login route
+//
+router.route('/login')
 
-// GET login page
-router.get('/login', function(req, res) {
-	console.log(req.user);
-	res.render('login', { user : req.user });
-});
+	// GET login page
+	.get(function(req, res) {
+		res.render('login', { user : req.user });
+	})
 
-// POST to log in
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-});
+	// POST to log in
+	.post(passport.authenticate('local'), function(req, res) {
+		res.redirect('/');
+	});
 
-// GET logout page
-router.get('/logout', function(req, res) {
-	console.log(req.user);
-    req.logout();
-    res.redirect('/login');
-});
+
+//
+// Logout route
+//
+router.route('/logout')
+
+	// GET logout page
+	.get(function(req, res) {
+		req.logout();
+		res.redirect('/login');
+	});
 
 module.exports = router;
