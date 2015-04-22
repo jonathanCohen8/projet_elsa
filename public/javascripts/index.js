@@ -43,10 +43,14 @@ $(document).ready(function() {
 		$('#timer').animate({bottom:0},400);
 		//Requete ajax de l'envoie de la nouvelle organisation du sac
 		$.ajax({
-			url : 'bag_organize.php',
-			type : 'POST',
+			url : '/inventory',
+			type : 'PUT',
 			contentType: "application/json",
 			data : 'bag=' + JSON.stringify(table)
-    	});
+    	}).done(function(data) {
+			//Action en cas de succes
+		}).fail(function(data) {
+			//Action en cas d'échec
+		});
 	});
 });
