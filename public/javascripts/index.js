@@ -16,10 +16,10 @@ $(document).ready(function() {
 	var socket = io.connect('http://localhost:3000');
 	socket.on('timer', function(timer) {
 		//Execution de l'affichage du timer en temps réel
-		alert("execution du socket");
+		// alert("execution du socket");
 		$("#timer").html('Temps restant avant prochain tour: ' + timer.timer + ' secondes');
 		color_timer(Math.round((timer.timer*100)/timer.max));
-    })
+    });
 
 	//Colorisation fiche statistique
 	color_calc();
@@ -33,8 +33,8 @@ $(document).ready(function() {
 	//Au click sur l'inventaire
 	$('.action').click(function() {
 		$('#equipment').animate({bottom:0},400);
-	    $('#timer').animate({bottom:-200},400);
-	    //On appel la fonction inventaire
+		$('#timer').animate({bottom:-200},400);
+		//On appel la fonction inventaire
 		inventory(user);
 	});
 
@@ -48,7 +48,7 @@ $(document).ready(function() {
 			type : 'PUT',
 			contentType: "application/json",
 			data : 'bag=' + JSON.stringify(table)
-    	}).done(function(data) {
+		}).done(function(data) {
 			//Action en cas de succes
 		}).fail(function(data) {
 			//Action en cas d'échec
