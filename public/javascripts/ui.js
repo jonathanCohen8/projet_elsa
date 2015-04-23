@@ -12,14 +12,14 @@ function color_calc(){
 function color_timer(timer){
 	var meta2 = $("#timer");
 	if (timer >= 50){
-		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + (100-timer) + "% " + (100-timer) + "%, color-stop("+ timer + "%, #5F4EED), color-stop(" + (100-timer) + "%, #ABA4ED))");
+		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + (100-timer) + "% 100%, color-stop(0%, #5F4EED), color-stop(100%, #ABA4ED))");
 		meta2.css("background-image", "-webkit-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
 		meta2.css("background-image", "-moz-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
 		meta2.css("background-image", "-o-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
 		meta2.css("background-image", "linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + (100-timer) + "%)");
 	}
 	else{
-		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + timer + "% " + timer + "%, color-stop("+ timer + "%, #5F4EED), color-stop(" + timer + "%, #ABA4ED))");
+		meta2.css("background-image", "-webkit-gradient(linear, "+ timer + "% 0%, " + timer + "% 100%, color-stop(0%, #5F4EED), color-stop(100%, #ABA4ED))");
 		meta2.css("background-image", "-webkit-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
 		meta2.css("background-image", "-moz-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
 		meta2.css("background-image", "-o-linear-gradient(to right, #5F4EED "+ timer + "%,#ABA4ED " + timer + "%)");
