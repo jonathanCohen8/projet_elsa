@@ -7,16 +7,16 @@ function inventory(user) {
 	//Définition variable de départ
 	var inv = '#bag_content',
 		inv_check = [],
-		object_in_bag = user[0].inventory,
+		object_in_bag = user.inventory,
 		cell_size = 43;
 
 	// Positionnement initial des objets
 	//On recupere les coordonnées de la grille
 	invPos= $(inv).position();
-	var bag_size = table.length
+	var bag_size = table.length;
 	//On dépose les objet
 	for (var i=0; i < object_in_bag.length; i++){
-		$(inv).prepend("<img src='images/"+object_in_bag[i].picture+"' alt='"+object_in_bag[i].picture+"' data-objectId='"+object_in_bag[i].bag_id+"' class='draggable ui-widget-content'/>")
+		$(inv).prepend("<img src='images/"+object_in_bag[i].picture+"' alt='"+object_in_bag[i].picture+"' data-objectId='"+object_in_bag[i].bag_id+"' class='draggable ui-widget-content'/>");
 	}
 	//On redimensionne les objet d'apres leur tailles
 	for (var i=0; i < object_in_bag.length; i++){
@@ -51,7 +51,7 @@ function inventory(user) {
     $('.draggable').draggable({
             zIndex: 2700,
             grid: [43,43],
-            containment:inv,
+            // containment:inv,
             scroll: false,
             revert: 'invalid',
             stop: function(){

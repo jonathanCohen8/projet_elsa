@@ -19,38 +19,41 @@ router.get('/', function(req, res) {
 	res.render('index', {
 		user : req.user,
 		title : "Projet Elsa",
-		current_user : [
-			{
-				id : 1,
-				name : "John-Bob",
-				x : 45.7787,
-				y : 4.86865,
-				inventory : [
-					{
-						bag_id	: 1,
-						name	: 'P226',
-						type	: 'weapon',
-						size	: [2,2], // [width, heigh]
-						picture	: 'P226.png'
-					},
-					{
-						bag_id	: 2,
-						name	: 'Swiss Army knife',
-						type	: 'weapon',
-						size	: [1,2],
-						picture	: 'swiss.png'
-					},
-					{
-						bag_id	: 3,
-						name	: 'Satellite phone',
-						type	: 'telecommunications',
-						size	: [1,2],
-						picture	: 'phone.png'
-					}
-				],
-				bag : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
+		current_user : {
+			id : 1,
+			name : "John-Bob",
+			x : 45.7787,
+			y : 4.86865,
+			inventory : [
+				{
+					bag_id	: 1,
+					name	: 'P226',
+					type	: 'weapon',
+					size	: [2,2], // [width, heigh]
+					picture	: 'P226.png'
+				},
+				{
+					bag_id	: 2,
+					name	: 'Swiss Army knife',
+					type	: 'weapon',
+					size	: [1,2],
+					picture	: 'swiss.png'
+				},
+				{
+					bag_id	: 3,
+					name	: 'Satellite phone',
+					type	: 'telecommunications',
+					size	: [1,2],
+					picture	: 'phone.png'
+				}
+			],
+			bag : {
+				name : "Sac de fortune",
+				size : [4, 4],
+				content : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
 			}
-		],
+		},
+		vision : [0.001],
 		users: [
 			{
 				id : 2,

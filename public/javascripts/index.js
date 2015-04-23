@@ -5,7 +5,7 @@ var joueur1 = {
     acuity: 3,
     move:2
 };
-var table = user[0].bag;
+var table = user.bag.content;
 
 //Initialisation
 $(document).ready(function() {
@@ -47,7 +47,7 @@ $(document).ready(function() {
 			url : '/inventory',
 			type : 'PUT',
 			contentType: "application/json",
-			data : 'bag=' + JSON.stringify(table)
+			data : JSON.stringify(table)
 		}).done(function(data) {
 			//Action en cas de succes
 		}).fail(function(data) {

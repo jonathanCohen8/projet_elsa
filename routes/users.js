@@ -32,8 +32,8 @@ router.route('/inventory')
 	// PUT inventory
 	.put(function(req, res) {
 		// var idUser = req.params.id;
-		// console.log(req.bag);
-		console.log('#yolo');
+		var bag = req.body;
+		console.log(bag[0][1]);
 		res.status(200).send();
 	});
 
