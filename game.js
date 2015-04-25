@@ -10,8 +10,8 @@
 var io = require('socket.io')();
 
 var cycle = 0;
-var max = 100;
-var timer = 100;
+var max = 1000;
+var timer = max;
 
 setInterval(function() {
 	timer--;

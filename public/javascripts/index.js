@@ -5,7 +5,7 @@ var joueur1 = {
     acuity: 3,
     move:2
 };
-var table = user.bag.content;
+var table = user.inventory.order;
 
 //Initialisation
 $(document).ready(function() {

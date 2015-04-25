@@ -11,6 +11,13 @@ block content
       br
       input(type='password', name="password", placeholder='Mot de passe')
       br
+      input(type='radio', name='gender', value='male', id='male', checked)
+      label(for='male')
+      | Male
+      input(type='radio', name='gender', value='female', id='female')
+      label(for='female')
+      | Female
+      br
       button(type='submit') Envoyer
     br
     a(href='/login') Connexion

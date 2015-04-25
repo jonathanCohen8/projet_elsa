@@ -9,12 +9,12 @@
 
 var express	= require('express');
 var router	= express.Router();
+var User	= require('../model/User.js');
 
 
 //
 // Current user's neighboors routes
 //
-// router.route('/:id/neighboors')
 router.route('/neighboors')
 
 	// GET neighboors of the current user
@@ -26,14 +26,12 @@ router.route('/neighboors')
 //
 // Current user's inventory routes
 //
-// router.put('/:id/inventory')
 router.route('/inventory')
 
 	// PUT inventory
 	.put(function(req, res) {
-		// var idUser = req.params.id;
-		var bag = req.body;
-		console.log(bag[0][1]);
+		// console.log(req.user);
+		console.log(req.body);
 		res.status(200).send();
 	});
 

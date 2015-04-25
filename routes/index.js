@@ -12,56 +12,81 @@ var passport	= require('passport');
 var User		= require('../model/User.js');
 var router		= express.Router();
 
-// GET map page
-router.get('/', function(req, res) {
-	if(!req.user) return res.redirect('/login');
 
-	res.render('index', {
-		user : req.user,
-		title : "Projet Elsa",
-		current_user : {
-			id : 1,
-			name : "John-Bob",
-			x : 45.7787,
-			y : 4.86865,
-			inventory : [
+//
+// Route middleware to make sure a user is logged in
+//
+function isLoggedIn(req, res, next) {
+
+    // If user is authenticated in the session, carry on.
+    if (req.isAuthenticated())
+        return next();
+
+    // If not, redirect him to the home page
+    res.redirect('/login');
+}
+
+
+// GET map page
+router.get('/', isLoggedIn, function(req, res) {
+	User.findOne({ 'username': req.user.username }, function(err, user) {
+		if (err) {
+			console.log('Error : %s', err);
+			return;
+		}
+		console.log(user.username);
+		console.log(user.x);
+		console.log(user.y);
+		console.log(user.inventory);
+		console.log(user.inventory.order);
+		console.log(user.features);
+		res.render('index', {
+			user : req.user,
+			title : "Projet Elsa",
+			current_user : {
+				id : user._id,
+				name : user.name,
+				x : user.x,
+				y : user.y,
+				inventory : user.inventory,/*[
+					{
+						bag_id	: 1,
+						name	: 'P226',
+						type	: 'weapon',
+						size	: [2,2], // [width, heigh]
+						picture	: 'P226.png'
+					},
+					{
+						bag_id	: 2,
+						name	: 'Swiss Army knife',
+						type	: 'weapon',
+						size	: [1,2],
+						picture	: 'swiss.png'
+					},
+					{
+						bag_id	: 3,
+						name	: 'Satellite phone',
+						type	: 'telecommunications',
+						size	: [1,2],
+						picture	: 'phone.png'
+					}
+				]
+				bag : {
+					name : "Sac de fortune",
+					size : [4, 4],
+					content : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
+				}*/
+				feature : user.features
+			},
+			users : [
 				{
-					bag_id	: 1,
-					name	: 'P226',
-					type	: 'weapon',
-					size	: [2,2], // [width, heigh]
-					picture	: 'P226.png'
-				},
-				{
-					bag_id	: 2,
-					name	: 'Swiss Army knife',
-					type	: 'weapon',
-					size	: [1,2],
-					picture	: 'swiss.png'
-				},
-				{
-					bag_id	: 3,
-					name	: 'Satellite phone',
-					type	: 'telecommunications',
-					size	: [1,2],
-					picture	: 'phone.png'
+					id : 2,
+					name : "Elsa",
+					x : 45.779,
+					y : 4.8688
 				}
-			],
-			bag : {
-				name : "Sac de fortune",
-				size : [4, 4],
-				content : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
-			}
-		},
-		vision : [0.001],
-		users: [
-			{
-				id : 2,
-				name : "Elsa",
-				x : 45.779,
-				y : 4.8688
-			}
-		]
+			]
+		});
 	});
 });
 
@@ -83,20 +108,41 @@ router.route('/register')
 
 	// POST a new user
 	.post(function(req, res) {
-		User.register(new User(
-			{
-				username	: req.body.username,
-				mail		: req.body.mail
-			}), req.body.password, function(err) {
+		User.register(new User({
+			username	: req.body.username,
+			mail		: req.body.mail,
+			gender		: req.body.gender,
+			x			: Math.random() * 180,
+			y			: Math.random() * 90,
+			level		: 1,
+			inventory	: {
+				name	: "Banane 90's",
+				size	: [4,1],
+				items	: [],
+				order	: [[0, 0, 0, 0]]
+			},
+			features	: {
+				tiredness	: 0,
+				endurance	: 0,
+				sight		: 0,
+				strengh		: 0
+			}
+		}), req.body.password, function(err) {
+
+			// Error during registration
 			if (err) {
-				return res.render("register", {info: "Désolé. Cet utilisateur existe déjà."});
+				console.log(err);
+				return res.render("register", {
+					info: "Désolé, il y a eu une erreur."
+				});
 			}
 
+			// Redirect to character creation page
 			passport.authenticate('local')(req, res, function () {
 				res.redirect('/');
 			});
 		});
-});
+	});
 
 
 //
