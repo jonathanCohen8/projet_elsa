@@ -1,7 +1,13 @@
 //Définition variable
-var joueur1 = {
+/*var joueur1 = {
     x:     45.77832,
     y:   4.86936,
+    acuity: 3,
+    move:2
+};*/
+var joueur1 = {
+    x:   user.lat,
+    y:   user.lng,
     acuity: 3,
     move:2
 };

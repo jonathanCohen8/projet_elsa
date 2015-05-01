@@ -30,7 +30,6 @@ router.route('/inventory')
 
 	// PUT inventory
 	.put(function(req, res) {
-		// console.log(req.user);
 		console.log(req.body);
 		res.status(200).send();
 	});

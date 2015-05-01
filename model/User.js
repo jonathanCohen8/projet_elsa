@@ -15,8 +15,8 @@ var User = new mongoose.Schema({
 	password	: String,
 	mail		: String,
 	gender		: String,
-	x			: Number,
-	y			: Number,
+	lat			: Number,
+	lng			: Number,
 	level		: Number,
 	inventory	: {
 		name	: String,
@@ -28,7 +28,7 @@ var User = new mongoose.Schema({
 			size	: [Number],
 			picture	: String
 		}],
-		order	: [] // Should be [[Number]] ...
+		order	: [] // Should be [[Number]] ... ?
 	},
 	features	:  {
 		tiredness	: Number,

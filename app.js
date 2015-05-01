@@ -19,7 +19,7 @@ var Strategy     = require('passport-local').Strategy;
 
 
 // Mongo database
-mongoose.connect('mongodb://195.154.71.91:27017/projet_elsa');
+mongoose.connect('mongodb://195.154.71.91:1723/projet_elsa');
 var db = mongoose.connection;
 
 

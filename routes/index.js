@@ -29,65 +29,50 @@ function isLoggedIn(req, res, next) {
 
 // GET map page
 router.get('/', isLoggedIn, function(req, res) {
-	User.findOne({ 'username': req.user.username }, function(err, user) {
-		if (err) {
-			console.log('Error : %s', err);
-			return;
-		}
-		console.log(user.username);
-		console.log(user.x);
-		console.log(user.y);
-		console.log(user.inventory);
-		console.log(user.inventory.order);
-		console.log(user.features);
-		res.render('index', {
-			user : req.user,
-			title : "Projet Elsa",
-			current_user : {
-				id : user._id,
-				name : user.name,
-				x : user.x,
-				y : user.y,
-				inventory : user.inventory,/*[
-					{
-						bag_id	: 1,
-						name	: 'P226',
-						type	: 'weapon',
-						size	: [2,2], // [width, heigh]
-						picture	: 'P226.png'
-					},
-					{
-						bag_id	: 2,
-						name	: 'Swiss Army knife',
-						type	: 'weapon',
-						size	: [1,2],
-						picture	: 'swiss.png'
-					},
-					{
-						bag_id	: 3,
-						name	: 'Satellite phone',
-						type	: 'telecommunications',
-						size	: [1,2],
-						picture	: 'phone.png'
+
+	// Find current user
+	User.findOne({ 'username': req.user.username })
+		.exec(function(err, user) {
+			if (err) {
+				console.log('Error : %s', err);
+				return;
+			}
+
+			// Find neighboors of current user
+			// TODO : maybe, better use Mongo's geospatial projection functions
+			// http://docs.mongodb.org/manual/reference/operator/query/#geospatial
+			User.find()
+				.where('_id').ne(user._id)
+				.where('lat').gt(user.lat - 1).lt(user.lat + 1)
+				.where('lng').gt(user.lng - 1).lt(user.lng + 1)
+				.exec(function(err, neighboors) {
+
+					// Build neighboors array
+					var otherUsers = [];
+					for(var n in neighboors) {
+						otherUsers.push({
+							name : neighboors[n].username,
+							lat : neighboors[n].lat,
+							lng : neighboors[n].lng
+						});
 					}
-				]
-				bag : {
-					name : "Sac de fortune",
-					size : [4, 4],
-					content : [[0,3,0,0],[0,3,0,0],[1,1,0,2],[1,1,0,2]]
-				}*/
-				feature : user.features
-			},
-			users : [
-				{
-					id : 2,
-					name : "Elsa",
-					x : 45.779,
-					y : 4.8688
-				}
-			]
+
+					// Render page with accurate information
+					res.render('index', {
+						title : 'Projet Elsa',
+						user : {
+							// id : user._id,
+							name : user.username,
+							lat : user.lat,
+							lng : user.lng,
+							level : user.level,
+							inventory : user.inventory,
+							features : user.features
+						},
+						neighboors : otherUsers
+					});
+				});
 		});
-	});
 });
 
 // GET start page
@@ -108,16 +93,23 @@ router.route('/register')
 
 	// POST a new user
 	.post(function(req, res) {
+
+		//
+		// TODO
+		// Check for user's info
+		// (mail, password, other stuff ...)
+		// 
+
 		User.register(new User({
 			username	: req.body.username,
 			mail		: req.body.mail,
 			gender		: req.body.gender,
-			x			: Math.random() * 180,
-			y			: Math.random() * 90,
+			lat			: 45.7484 + parseFloat((Math.random() * 0.02).toFixed(4)), // Lyon city latitude
+			lng			: 4.8467 + parseFloat((Math.random() * 0.02).toFixed(4)), // Lyon city longitude
 			level		: 1,
 			inventory	: {
-				name	: "Banane 90's",
-				size	: [4,1],
+				name	: 'Banane 90\'s',
+				size	: [4, 1],
 				items	: [],
 				order	: [[0, 0, 0, 0]]
 			},
@@ -132,8 +124,8 @@ router.route('/register')
 			// Error during registration
 			if (err) {
 				console.log(err);
-				return res.render("register", {
-					info: "Désolé, il y a eu une erreur."
+				return res.render('register', {
+					info: 'Désolé, il y a eu une erreur.'
 				});
 			}
 

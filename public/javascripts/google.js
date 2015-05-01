@@ -128,7 +128,7 @@ function initialize(x,y,acuity,move) {
 		// find the raidus in lat/lon 
 		var rlat = (radius / earthsradius) * r2d; 
 		var rlng = rlat / Math.cos(point.lat() * d2r); 
-
+		// alert(rlat + " " + rlng);
 		var extp = new Array(); 
 		if (dir==1)   {var start=0;var end=points+1} // one extra here makes sure we connect the ends
 		else      {var start=points+1;var end=0}
