@@ -34,7 +34,8 @@ router.get('/', isLoggedIn, function(req, res) {
 	User.findOne({ 'username': req.user.username })
 		.exec(function(err, user) {
 			if (err) {
-				console.log('Error : %s', err);
+				console.log(err);
+				res.status(500).send();
 				return;
 			}
 
@@ -42,18 +43,18 @@ router.get('/', isLoggedIn, function(req, res) {
 			// TODO : maybe, better use Mongo's geospatial projection functions
 			// http://docs.mongodb.org/manual/reference/operator/query/#geospatial
 			User.find()
-				.where('_id').ne(user._id)
-				.where('lat').gt(user.lat - 1).lt(user.lat + 1)
-				.where('lng').gt(user.lng - 1).lt(user.lng + 1)
+				.where('_id').ne(user['_id'])
+				.where('lat').gt(user['lat'] - 1).lt(user['lat'] + 1)
+				.where('lng').gt(user['lng'] - 1).lt(user['lng'] + 1)
 				.exec(function(err, neighboors) {
 
 					// Build neighboors array
 					var otherUsers = [];
 					for(var n in neighboors) {
 						otherUsers.push({
-							name : neighboors[n].username,
-							lat : neighboors[n].lat,
-							lng : neighboors[n].lng
+							name : neighboors[n]['username'],
+							lat : neighboors[n]['lat'],
+							lng : neighboors[n]['lng']
 						});
 					}
 
@@ -62,12 +63,12 @@ router.get('/', isLoggedIn, function(req, res) {
 						title : 'Projet Elsa',
 						user : {
 							// id : user._id,
-							name : user.username,
-							lat : user.lat,
-							lng : user.lng,
-							level : user.level,
-							inventory : user.inventory,
-							features : user.features
+							name : user['username'],
+							lat : user['lat'],
+							lng : user['lng'],
+							level : user['level'],
+							inventory : user['inventory'],
+							features : user['features']
 						},
 						neighboors : otherUsers
 					});
@@ -98,17 +99,24 @@ router.route('/register')
 		// TODO
 		// Check for user's info
 		// (mail, password, other stuff ...)
-		// 
+		//
 
+		// Start position
+		var start = {
+			lat : 45.7484, // Lyon city latitude
+			lng : 4.8467 // Lyon city longitude
+		};
+		var distance = 0.001; // remoteness from the center of regular start position
+		
 		User.register(new User({
-			username	: req.body.username,
-			mail		: req.body.mail,
-			gender		: req.body.gender,
-			lat			: 45.7484 + parseFloat((Math.random() * 0.02).toFixed(4)), // Lyon city latitude
-			lng			: 4.8467 + parseFloat((Math.random() * 0.02).toFixed(4)), // Lyon city longitude
+			username	: req.body['username'],
+			mail		: req.body['mail'],
+			gender		: req.body['gender'],
+			lat			: start.lat + parseFloat((Math.random().toFixed(4) * distance)),
+			lng			: start.lng + parseFloat((Math.random().toFixed(4) * distance)),
 			level		: 1,
 			inventory	: {
-				name	: 'Banane 90\'s',
+				name	: 'Banane 1996',
 				size	: [4, 1],
 				items	: [],
 				order	: [[0, 0, 0, 0]]
@@ -129,7 +137,7 @@ router.route('/register')
 				});
 			}
 
-			// Redirect to character creation page
+			// Redirect to main page
 			passport.authenticate('local')(req, res, function () {
 				res.redirect('/');
 			});

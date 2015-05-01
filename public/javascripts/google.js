@@ -103,7 +103,7 @@ function initialize(x,y,acuity,move) {
 	for (i=0; i< players.length;i++)
 	{
 		player = new google.maps.Marker({
-			position: new google.maps.LatLng(players[i].x,players[i].y),
+			position: new google.maps.LatLng(players[i]['lat'],players[i]['lng']),
 			map: map,
 			label: players[i].name,
 			draggable: false,

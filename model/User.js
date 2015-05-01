@@ -11,30 +11,35 @@ var mongoose = require('mongoose');
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new mongoose.Schema({
-	name		: String,
-	password	: String,
-	mail		: String,
-	gender		: String,
-	lat			: Number,
-	lng			: Number,
-	level		: Number,
-	inventory	: {
-		name	: String,
-		size	: [Number],
-		items	: [{
-			id		: Number,
-			name	: String,
-			type	: String,
-			size	: [Number],
-			picture	: String
+	'username' : String,
+	'password' : String,
+	'mail' : String,
+	'gender' : String,
+	'lat' : Number,
+	'lng' : Number,
+	'level' : Number,
+	'inventory' : {
+		'name' : String,
+		'size' : [Number],
+		'items' : [{
+			'id' : Number,
+			'name' : String,
+			'type' : String,
+			'size' : [Number],
+			'picture' : String
 		}],
-		order	: [] // Should be [[Number]] ... ?
+		'order' : [], // Should be [[Number]] ... ?
 	},
-	features	:  {
-		tiredness	: Number,
-		endurance	: Number,
-		sight		: Number,
-		strengh		: Number
+	'features' :  {
+		'tiredness' : Number,
+		'endurance' : Number,
+		'sight' : Number,
+		'strengh' : Number,
+		'_id' : false
+	},
+	'action' : {
+		'previousAction' : String,
+		'currentAction' : String
 	}
 });
 
