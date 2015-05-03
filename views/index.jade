@@ -19,9 +19,9 @@ block content
       h4 #{user.inventory.name}
       a#close_bag X
       table#bag_content
-        - for (var i = 0; i < 4; i++){
+        - for (var i = 0; i < user.inventory.size[1]; i++){
           tr
-            - for (var j = 0; j < 4; j++) {
+            - for (var j = 0; j < user.inventory.size[0]; j++) {
               td 0
             - }
         - }

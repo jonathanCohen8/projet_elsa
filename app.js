@@ -66,6 +66,7 @@ app.use(function(req, res, next){
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/user'));
 
+
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

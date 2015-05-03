@@ -36,10 +36,6 @@ var User = new mongoose.Schema({
 		'sight' : Number,
 		'strengh' : Number,
 		'_id' : false
-	},
-	'action' : {
-		'previousAction' : String,
-		'currentAction' : String
 	}
 });
 

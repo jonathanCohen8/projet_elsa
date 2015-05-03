@@ -35,8 +35,7 @@ router.get('/', isLoggedIn, function(req, res) {
 		.exec(function(err, user) {
 			if (err) {
 				console.log(err);
-				res.status(500).send();
-				return;
+				return res.status(500).send();
 			}
 
 			// Find neighboors of current user
@@ -47,6 +46,11 @@ router.get('/', isLoggedIn, function(req, res) {
 				.where('lat').gt(user['lat'] - 1).lt(user['lat'] + 1)
 				.where('lng').gt(user['lng'] - 1).lt(user['lng'] + 1)
 				.exec(function(err, neighboors) {
+
+					if (err) {
+						console.log(err);
+						return res.status(500).send();
+					}
 
 					// Build neighboors array
 					var otherUsers = [];
