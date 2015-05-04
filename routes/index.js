@@ -10,6 +10,7 @@
 var express		= require('express');
 var passport	= require('passport');
 var User		= require('../model/User.js');
+var Inventory	= require('../model/Inventory.js');
 var router		= express.Router();
 
 
@@ -31,52 +32,57 @@ function isLoggedIn(req, res, next) {
 router.get('/', isLoggedIn, function(req, res) {
 
 	// Find current user
-	User.findOne({ 'username': req.user.username })
-		.exec(function(err, user) {
+	User.findOne({ 'username': req.user.username }, function(err, user) {
 			if (err) {
 				console.log(err);
 				return res.status(500).send();
 			}
 
-			// Find neighboors of current user
-			// TODO : maybe, better use Mongo's geospatial projection functions
-			// http://docs.mongodb.org/manual/reference/operator/query/#geospatial
-			User.find()
-				.where('_id').ne(user['_id'])
-				.where('lat').gt(user['lat'] - 1).lt(user['lat'] + 1)
-				.where('lng').gt(user['lng'] - 1).lt(user['lng'] + 1)
-				.exec(function(err, neighboors) {
+			// Find current user's inventory
+			Inventory.findOne({ 'idUser' : req.user['_id']}, function(err, inventory) {
+				if (err) {
+					console.log(err);
+					return res.status(500).send();
+				}
 
-					if (err) {
-						console.log(err);
-						return res.status(500).send();
-					}
+				// Find neighboors of current user
+				User.find()
+					.where('_id').ne(user['_id'])
+					.where('lat').gt(user['lat'] - 1).lt(user['lat'] + 1)
+					.where('lng').gt(user['lng'] - 1).lt(user['lng'] + 1)
+					.exec(function(err, neighboors) {
 
-					// Build neighboors array
-					var otherUsers = [];
-					for(var n in neighboors) {
-						otherUsers.push({
-							name : neighboors[n]['username'],
-							lat : neighboors[n]['lat'],
-							lng : neighboors[n]['lng']
+						if (err) {
+							console.log(err);
+							return res.status(500).send();
+						}
+
+						// Build neighboors array
+						var otherUsers = [];
+						for(var n in neighboors) {
+							otherUsers.push({
+								name : neighboors[n]['username'],
+								lat : neighboors[n]['lat'],
+								lng : neighboors[n]['lng']
+							});
+						}
+
+						// Render page with accurate information
+						res.render('index', {
+							title : 'Projet Elsa',
+							user : {
+								// id : user._id,
+								name : user['username'],
+								lat : user['lat'],
+								lng : user['lng'],
+								level : user['level'],
+								inventory : inventory,
+								features : user['features']
+							},
+							neighboors : otherUsers
 						});
-					}
-
-					// Render page with accurate information
-					res.render('index', {
-						title : 'Projet Elsa',
-						user : {
-							// id : user._id,
-							name : user['username'],
-							lat : user['lat'],
-							lng : user['lng'],
-							level : user['level'],
-							inventory : user['inventory'],
-							features : user['features']
-						},
-						neighboors : otherUsers
 					});
-				});
+			});
 		});
 });
 
@@ -113,25 +119,19 @@ router.route('/register')
 		var distance = 0.001; // remoteness from the center of regular start position
 		
 		User.register(new User({
-			username	: req.body['username'],
-			mail		: req.body['mail'],
-			gender		: req.body['gender'],
-			lat			: start.lat + parseFloat((Math.random().toFixed(4) * distance)),
-			lng			: start.lng + parseFloat((Math.random().toFixed(4) * distance)),
-			level		: 1,
-			inventory	: {
-				name	: 'Banane 1996',
-				size	: [4, 1],
-				items	: [],
-				order	: [[0, 0, 0, 0]]
-			},
-			features	: {
-				tiredness	: 0,
-				endurance	: 0,
-				sight		: 0,
-				strengh		: 0
+			'username'	: req.body['username'],
+			'mail'		: req.body['mail'],
+			'gender'	: req.body['gender'],
+			'lat'		: start.lat + parseFloat((Math.random().toFixed(4) * distance)),
+			'lng'		: start.lng + parseFloat((Math.random().toFixed(4) * distance)),
+			'level'		: 1,
+			'features'	: {
+				'tiredness'	: 0,
+				'endurance'	: 0,
+				'sight'		: 0,
+				'strengh'		: 0
 			}
-		}), req.body.password, function(err) {
+		}), req.body.password, function(err, user) {
 
 			// Error during registration
 			if (err) {
@@ -141,9 +141,22 @@ router.route('/register')
 				});
 			}
 
-			// Redirect to main page
-			passport.authenticate('local')(req, res, function () {
-				res.redirect('/');
+			new Inventory({
+				'idUser': user['_id'],
+				'name'	: 'Banane 1996',
+				'size'	: [4, 1],
+				'items'	: [],
+				'order'	: [[0, 0, 0, 0]]
+			}).save(function(err) {
+				if (err) {
+					console.log(err);
+					return res.status(400).send();
+				}
+
+				// Redirect to main page
+				passport.authenticate('local')(req, res, function () {
+					res.redirect('/');
+				});
 			});
 		});
 	});

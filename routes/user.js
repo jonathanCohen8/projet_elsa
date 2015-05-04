@@ -7,10 +7,11 @@
 // Router
 //
 
-var express	= require('express');
-var router	= express.Router();
-var User	= require('../model/User.js');
-var Action	= require('../model/Action.js');
+var express		= require('express');
+var router		= express.Router();
+var User		= require('../model/User.js');
+var Action		= require('../model/Action.js');
+var Inventory	= require('../model/Inventory.js');
 
 
 //
@@ -65,7 +66,7 @@ router.route('/inventory')
 
 	// GET inventory
 	.get(isLoggedIn, function(req, res) {
-		User.findOne({ 'username': req.user['username'] })
+		Inventory.findOne({ 'idUser': req.user['_id'] })
 			.select('inventory')
 			.exec(function(err, inventory) {
 				if (err) {
@@ -78,7 +79,7 @@ router.route('/inventory')
 
 	// PUT inventory
 	.put(isLoggedIn, function(req, res) {
-		User.findOneAndUpdate({ '_id': req.user['_id'] }, { 'inventory.order': req.body },
+		Inventory.findOneAndUpdate({ 'idUser': req.user['_id'] }, { 'order': req.body },
 			function(err) {
 				if (err) {
 					console.log(err);
@@ -96,7 +97,7 @@ router.route('/action')
 
 	// GET current action
 	.get(isLoggedIn, function(req, res) {
-		Action.findById(req.user['_id'], function(err, action) {
+		Action.findOne({ '_id': req.user['_id'] }, function(err, action) {
 			if (err) {
 				console.log(err);
 				return res.status(400).send();
@@ -109,21 +110,21 @@ router.route('/action')
 	.post(isLoggedIn, function(req, res) {
 
 		// First, check for user's action
-		var everythingOk = false;
+		var everythingsOk = false;
 
 		// Move action
 		if(req.body['type'] === 'move' &&
 			req.body['options'].hasOwnProperty('lat') &&
 			req.body['options'].hasOwnProperty('lng'))
-				everythingOk = true;
+				everythingsOk = true;
 
 		// Fight action
 		else if(req.body['type'] === 'fight' &&
 			req.body['options'].hasOwnProperty('idEnemy'))
-				everythingOk = true;
+				everythingsOk = true;
 
 		// If everything is OK, update database with new user action
-		if(everythingOk) {
+		if(everythingsOk) {
 			Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, req.body, { 'upsert' : true },
 			function(err) {
 				if (err) {
