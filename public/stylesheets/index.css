@@ -143,7 +143,7 @@ body
 	width: 64px;
 }
 
-#mouse_context{
+#mouse_context_move{
 	position: absolute;
 	z-index: 15;
 	background:white;
@@ -152,7 +152,7 @@ body
 	padding: 3px;
 }
 
-#mouse_context:hover{
+#mouse_context_move:hover{
 	background: rgb(240,240,240);
 }
 

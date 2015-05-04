@@ -1,22 +1,10 @@
-//Définition variable
-/*var joueur1 = {
-    x:     45.77832,
-    y:   4.86936,
-    acuity: 3,
-    move:2
-};*/
-var joueur1 = {
-    x:   user.lat,
-    y:   user.lng,
-    acuity: 3,
-    move:2
-};
 var table = user.inventory.order;
+var moveLatLng;
 
 //Initialisation
 $(document).ready(function() {
 	//On initialise la map google
-	initialize(joueur1.x,joueur1.y,joueur1.acuity,joueur1.move);
+	initialize();
 
 	//Connection au socket io
 	var socket = io.connect('http://localhost:3000');
@@ -60,4 +48,28 @@ $(document).ready(function() {
 			//Action en cas d'échec
 		});
 	});
+
+	//Au click sur ce déplacer
+	$('#mouse_context_move').click(function() {
+		var move_options = {
+		    'type' : 'move',
+		    'options' : {
+		       'lat' : moveLatLng.lat(),
+		       'lng' : moveLatLng.lng()
+		    }
+		}
+		//Requete ajax de l'envoie des nouvelle coordonnées
+		$.ajax({
+			url : '/action',
+			type : 'POST',
+			contentType: "application/json",
+			data : JSON.stringify(move_options)
+		}).done(function(data) {
+			//Action en cas de succes
+			$("#mouse_context_move").hide();
+		}).fail(function(data) {
+			//Action en cas d'échec
+		});
+	});
+
 });

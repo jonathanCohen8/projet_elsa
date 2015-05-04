@@ -9,27 +9,27 @@ function street(x,y){
 		},
 		disableDefaultUI: true
 	};
-	var street = new google.maps.StreetViewPanorama(document.getElementById('street'), panoramaOptions);
+	var streetView = new google.maps.StreetViewPanorama(document.getElementById('street'), panoramaOptions);
 
 	//animation
 	//animation street
 	var j = 0;
 	rotation = setInterval(function() {
-		var pov = street.getPov();
+		var pov = streetView.getPov();
 		pov.heading += 0.01;
-		street.setPov(pov);
+		streetView.setPov(pov);
 	}, 2); 
 }
 
-function initialize(x,y,acuity,move) {
+function initialize() {
 	//Coordonnée du joueur
-	var myLatlng = new google.maps.LatLng(x,y);
+	var myLatlng = new google.maps.LatLng(user.lat,user.lng);
 	//définition Variable
-	var moveRadius = move*15;
-	
+	var moveRadius = user.features.endurance;
+
 	//Génération de la carte
 	var mapOptions = {
-		zoom: 19,
+		zoom: user.features.sight,
 		zoomControl: false,
 		draggable: false,
 		streetViewControl: false,
@@ -47,7 +47,7 @@ function initialize(x,y,acuity,move) {
 			{ "lightness": 20 }
 		]}
 		]
-	}
+	};
 	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 	
 	//gestion label pour le marker
@@ -119,7 +119,7 @@ function initialize(x,y,acuity,move) {
 
 	//Gestions des distances
 	//Fonction de tracage du cercle-trou
-	function drawCircle(point, radius, dir) { 
+	/*function drawCircle(point, radius, dir) { 
 		var d2r = Math.PI / 180;   // degrees to radians 
 		var r2d = 180 / Math.PI;   // radians to degrees 
 		var earthsradius = 3963; // 3963 is the radius of the earth in miles
@@ -129,7 +129,7 @@ function initialize(x,y,acuity,move) {
 		var rlat = (radius / earthsradius) * r2d; 
 		var rlng = rlat / Math.cos(point.lat() * d2r); 
 		// alert(rlat + " " + rlng);
-		var extp = new Array(); 
+		var extp = []; 
 		if (dir==1)   {var start=0;var end=points+1} // one extra here makes sure we connect the ends
 		else      {var start=points+1;var end=0}
 		for (var i=start; (dir==1 ? i < end : i > end); i=i+dir) { 
@@ -158,6 +158,8 @@ function initialize(x,y,acuity,move) {
     new google.maps.LatLng(-85,180),
     new google.maps.LatLng(0,180),
     new google.maps.LatLng(85,180)];
+    */
+
 	var moveOption = {
 		strokeOpacity: 0.4,
 		strokeWeight: 2,
@@ -167,6 +169,8 @@ function initialize(x,y,acuity,move) {
 		clickable: false,
 		radius: moveRadius
 	};
+
+	/*
 	var acuityOptions = {
 	      strokeColor: '#404040',
 	      strokeOpacity: 0.9,
@@ -177,10 +181,11 @@ function initialize(x,y,acuity,move) {
 	      map: map,
 	      paths: [outerbounds,drawCircle(myLatlng,0.05,-1)]
 	    };
-	
+	*/
+
     //Ajout des cercle sur la carte
 	var moveCircle = new google.maps.Circle(moveOption);
-	var acuityCircle = new google.maps.Polygon(acuityOptions);
+	//var acuityCircle = new google.maps.Polygon(acuityOptions);
 
 	//systeme click map
 	google.maps.event.addListener(map, 'click', function(event) {
@@ -200,13 +205,14 @@ function initialize(x,y,acuity,move) {
         map: map
 	    });
 	    target.setVisible(false);
-	   	var action_x = event.pixel.x - parseInt($("#mouse_context").width())/2;
+	   	var action_x = event.pixel.x - parseInt($("#mouse_context_move").width())/2;
 	    //test si compris dans cercle déplacement
 		latLngA = new google.maps.LatLng(target.position.lat(), target.position.lng());
-		$("#mouse_context").hide();
+		$("#mouse_context_move").hide();
 		if(moveCircle.contains(target.position)) {
-			$("#mouse_context").text("Ce déplacer ici").show();
-			$("#mouse_context").css({left:action_x+'px',top:event.pixel.y+3+'px'});
+			moveLatLng = event.latLng;
+			$("#mouse_context_move").text("Ce déplacer ici").show();
+			$("#mouse_context_move").css({left:action_x+'px',top:event.pixel.y+3+'px'});
 		}
 	}
 
