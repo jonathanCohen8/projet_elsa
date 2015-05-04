@@ -4,6 +4,7 @@
 var revert = false;
 
 function inventory(user) {
+	var i;
 	//Définition variable de départ
 	var inv = '#bag_content',
 		inv_check = [],
@@ -15,15 +16,23 @@ function inventory(user) {
 	invPos= $(inv).position();
 	var bag_size = table.length;
 	//On dépose les objet
-	for (var i=0; i < object_in_bag.length; i++){
-		$(inv).prepend("<img src='images/"+object_in_bag[i].picture+"' alt='"+object_in_bag[i].picture+"' data-objectId='"+object_in_bag[i].bag_id+"' class='draggable ui-widget-content'/>");
+	for (i=0; i < object_in_bag.length; i++){
+		$(inv).prepend(
+			"<img src='images/" + object_in_bag[i].picture +
+			"' alt='" + object_in_bag[i].picture +
+			"' data-objectId='" + object_in_bag[i].bag_id +
+			"' class='draggable ui-widget-content'/>"
+		);
 	}
+
 	//On redimensionne les objet d'apres leur tailles
-	for (var i=0; i < object_in_bag.length; i++){
-		$('img[data-objectId='+object_in_bag[i].bag_id+']').css('width',38*object_in_bag[i].size[0]).css('height',40*object_in_bag[i].size[1]);
+	for (i=0; i < object_in_bag.length; i++){
+		$('img[data-objectId='+object_in_bag[i].bag_id+']')
+			.css('width',38*object_in_bag[i].size[0])
+			.css('height',40*object_in_bag[i].size[1]);
 	}
 	//On va lire le tableau et déposer les objet
-	for (var i=0 ; i<bag_size ; i++) {
+	for (i=0 ; i<bag_size ; i++) {
 		for (var j=0 ;j<bag_size ; j++) {
 			if (table[i][j] !== 0)
 			{
@@ -36,7 +45,9 @@ function inventory(user) {
 				if (y === 0){
 					inv_check.push(table[i][j]);
 					//On positionne un à un les objets
-					$('img[data-objectId='+table[i][j]+']').css('left',invPos.left + 4 + (cell_size * j)).css('top',invPos.top + 4 + (cell_size * i));
+					$('img[data-objectId='+table[i][j]+']')
+						.css('left',invPos.left + 4 + (cell_size * j))
+						.css('top',invPos.top + 4 + (cell_size * i));
 				}
 			}
 		}
@@ -72,7 +83,7 @@ function inventory(user) {
     });
 
 	//On execute la fonction pour chaque objet de l'inventaire
-	for (var i=0; i < object_in_bag.length; i++){
+	for (i=0; i < object_in_bag.length; i++){
 		collide('img[data-objectId='+object_in_bag[i].bag_id+']',object_in_bag[i].bag_id,table);
 	}
 	

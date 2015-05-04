@@ -113,23 +113,23 @@ router.route('/register')
 
 		// Start position
 		var start = {
-			lat : 45.7484, // Lyon city latitude
-			lng : 4.8467 // Lyon city longitude
+			lat : 45.74917634643434, // Lyon city latitude
+			lng : 4.846967607736588 // Lyon city longitude
 		};
-		var distance = 0.001; // remoteness from the center of regular start position
+		var distance = 0.003; // remoteness from the center of regular start position
 		
 		User.register(new User({
 			'username'	: req.body['username'],
 			'mail'		: req.body['mail'],
 			'gender'	: req.body['gender'],
-			'lat'		: start.lat + parseFloat((Math.random().toFixed(4) * distance)),
-			'lng'		: start.lng + parseFloat((Math.random().toFixed(4) * distance)),
+			'lat'		: start.lat + parseFloat(Math.random() * distance),
+			'lng'		: start.lng + parseFloat(Math.random() * distance),
 			'level'		: 1,
 			'features'	: {
 				'tiredness'	: 0,
-				'endurance'	: 0,
-				'sight'		: 0,
-				'strengh'		: 0
+				'endurance'	: Math.floor(Math.random() * 20),
+				'sight'		: Math.floor(Math.random() * 20),
+				'strengh'	: Math.floor(Math.random() * 20)
 			}
 		}), req.body.password, function(err, user) {
 
@@ -141,13 +141,13 @@ router.route('/register')
 				});
 			}
 
-			new Inventory({
+			Inventory.create({
 				'idUser': user['_id'],
-				'name'	: 'Banane 1996',
+				'name'	: 'Banane 199' + Math.floor(Math.random() * 10), // LOL
 				'size'	: [4, 1],
 				'items'	: [],
 				'order'	: [[0, 0, 0, 0]]
-			}).save(function(err) {
+			}, function(err) {
 				if (err) {
 					console.log(err);
 					return res.status(400).send();

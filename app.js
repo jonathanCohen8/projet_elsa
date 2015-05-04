@@ -16,6 +16,7 @@ var bodyParser   = require('body-parser');
 var mongoose     = require('mongoose');
 var passport     = require('passport');
 var Strategy     = require('passport-local').Strategy;
+var Game         = require('./model/Game.js');
 
 
 // Mongo database

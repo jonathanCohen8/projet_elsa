@@ -15,7 +15,7 @@ var Inventory	= require('../model/Inventory.js');
 
 
 //
-// Route middleware to make sure a user is logged in
+// Middleware to make sure a user is logged in
 //
 function isLoggedIn(req, res, next) {
 
@@ -110,32 +110,33 @@ router.route('/action')
 	.post(isLoggedIn, function(req, res) {
 
 		// First, check for user's action
-		var everythingsOk = false;
 
 		// Move action
 		if(req.body['type'] === 'move' &&
 			req.body['options'].hasOwnProperty('lat') &&
-			req.body['options'].hasOwnProperty('lng'))
-				everythingsOk = true;
+			req.body['options'].hasOwnProperty('lng')) {
+
+				// Update database with user's new move
+				Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, {
+						'options.lat' : req.body['options']['lat'],
+						'options.lng' : req.body['options']['lng']
+					}, { 'upsert' : true, 'new' : true },
+					function(err, action) {
+						if (err) {
+							console.log(err);
+							return res.status(400).send();
+						}
+						res.status(200).send();
+					});
+		}
 
 		// Fight action
 		else if(req.body['type'] === 'fight' &&
-			req.body['options'].hasOwnProperty('idEnemy'))
-				everythingsOk = true;
+			req.body['options'].hasOwnProperty('idEnemy')) {
+				newAction['options']['idEnemy'] = req.body['options']['idEnemy'];
 
-		// If everything is OK, update database with new user action
-		if(everythingsOk) {
-			Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, req.body, { 'upsert' : true },
-			function(err) {
-				if (err) {
-					console.log(err);
-					return res.status(400).send();
-				}
-				res.status(200).send();
-			});
-			
-		} else {
-			res.status(415).send();
+				// Update database with user's new fight
+				console.log("fight bitch #yolo");
 		}
 	});
 

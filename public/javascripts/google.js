@@ -18,7 +18,7 @@ function street(x,y){
 		var pov = streetView.getPov();
 		pov.heading += 0.01;
 		streetView.setPov(pov);
-	}, 2); 
+	}, 2);
 }
 
 function initialize() {
@@ -110,11 +110,11 @@ function initialize() {
 		});
 	}
 	//Affichage menu au click sur l'avatar
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 		google.maps.event.addListener(avatar, 'click', function() {
-		    $('#stats').animate({bottom:0},400);
-		    $('#timer').animate({bottom:-200},400);
-	  	});
+			$('#stats').animate({bottom:0},400);
+			$('#timer').animate({bottom:-200},400);
+		});
 	}
 
 	//Gestions des distances
@@ -172,15 +172,15 @@ function initialize() {
 
 	/*
 	var acuityOptions = {
-	      strokeColor: '#404040',
-	      strokeOpacity: 0.9,
-	      strokeWeight: 2,
-	      fillColor: '#404040',
-	      fillOpacity: 0.9,
-		  clickable: false,
-	      map: map,
-	      paths: [outerbounds,drawCircle(myLatlng,0.05,-1)]
-	    };
+		strokeColor: '#404040',
+		strokeOpacity: 0.9,
+		strokeWeight: 2,
+		fillColor: '#404040',
+		fillOpacity: 0.9,
+		clickable: false,
+		map: map,
+		paths: [outerbounds,drawCircle(myLatlng,0.05,-1)]
+		};
 	*/
 
     //Ajout des cercle sur la carte
@@ -189,24 +189,23 @@ function initialize() {
 
 	//systeme click map
 	google.maps.event.addListener(map, 'click', function(event) {
-   	placeMarker(event);
-	});
+		placeMarker(event);
+		});
 
 	google.maps.Circle.prototype.contains = function(latLng) {
-  	return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
-
-}
+		return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+	};
 
 	var target = null;
 	function placeMarker(event) {
 		if (target !== null) {target.setMap(null);}
-    	target = new google.maps.Marker({
-        position: event.latLng,
-        map: map
-	    });
-	    target.setVisible(false);
-	   	var action_x = event.pixel.x - parseInt($("#mouse_context_move").width())/2;
-	    //test si compris dans cercle déplacement
+		target = new google.maps.Marker({
+			position: event.latLng,
+			map: map
+		});
+		target.setVisible(false);
+		var action_x = event.pixel.x - parseInt($("#mouse_context_move").width())/2;
+		//test si compris dans cercle déplacement
 		latLngA = new google.maps.LatLng(target.position.lat(), target.position.lng());
 		$("#mouse_context_move").hide();
 		if(moveCircle.contains(target.position)) {
@@ -234,5 +233,5 @@ function initialize() {
 				i = 0;
 			}
 		}
-	}, 8);     */   
+	}, 8);     */
 }

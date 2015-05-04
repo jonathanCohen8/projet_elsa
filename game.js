@@ -8,9 +8,11 @@
 //
 
 var io = require('socket.io')();
+var User = require('./model/User.js'); // SHOULD NOT BE HERE
+var Action = require('./model/Action.js'); // SHOULD NOT BE HERE
 
 var cycle = 0;
-var max = 1000;
+var max = 30;
 var timer = max;
 
 setInterval(function() {
@@ -23,6 +25,29 @@ setInterval(function() {
     if(timer <= 0) {
         cycle++;
         timer = max;
+
+        // =============================
+        // UGLY STUFF BEGINS....... NOW!!
+        //
+
+		User.find({}, function(err, users) {
+			users.forEach(function(user) {
+				Action.findOne({ 'idUser' : user['_id']}, function(err, action) {
+					// console.log(action);
+					user.update({
+						'lat' : action['options']['lat'],
+						'lng' : action['options']['lng']
+					}, function(err, user) {
+						if (err) console.log(err);
+						// else console.log('it\'s alive!');
+					});
+				});
+			});
+		});
+
+        //
+        // UGLY STUFF ENDED! SAFE!
+        // =============================
     }
 }, 1000);
 
