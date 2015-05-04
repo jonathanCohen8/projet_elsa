@@ -18,18 +18,6 @@ var User = new mongoose.Schema({
 	'lat' : Number,
 	'lng' : Number,
 	'level' : Number,
-	'inventory' : {
-		'name' : String,
-		'size' : [Number],
-		'items' : [{
-			'id' : Number,
-			'name' : String,
-			'type' : String,
-			'size' : [Number],
-			'picture' : String
-		}],
-		'order' : [], // Should be [[Number]] ... ?
-	},
 	'features' :  {
 		'tiredness' : Number,
 		'endurance' : Number,
