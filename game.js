@@ -33,14 +33,15 @@ setInterval(function() {
 		User.find({}, function(err, users) {
 			users.forEach(function(user) {
 				Action.findOne({ 'idUser' : user['_id']}, function(err, action) {
-					// console.log(action);
-					user.update({
-						'lat' : action['options']['lat'],
-						'lng' : action['options']['lng']
-					}, function(err, user) {
-						if (err) console.log(err);
-						// else console.log('it\'s alive!');
-					});
+					if(action !== null) {
+						user.update({
+							'lat' : action['options']['lat'],
+							'lng' : action['options']['lng']
+						}, function(err, user) {
+							if (err) console.log(err);
+							else action.remove();
+						});
+					}
 				});
 			});
 		});

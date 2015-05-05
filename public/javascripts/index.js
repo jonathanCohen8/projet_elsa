@@ -13,6 +13,25 @@ $(document).ready(function() {
 		// alert("execution du socket");
 		$("#timer").html('Temps restant avant prochain tour: ' + timer.timer + ' secondes');
 		color_timer(Math.round((timer.timer*100)/timer.max));
+
+		if(timer.timer === 0) {
+
+			// GET new position
+			$.get('/position')
+				.done(function(data) {
+					console.log(data);
+				}).fail(function(err) {
+					console.log(err);
+				});
+
+			// GET neighboors positions
+			$.get('/neighboors')
+				.done(function(data) {
+					console.log(data);
+				}).fail(function(err) {
+					console.log(err);
+				});
+		}
     });
 
 	//Colorisation fiche statistique
@@ -51,13 +70,14 @@ $(document).ready(function() {
 
 	//Au click sur ce déplacer
 	$('#mouse_context_move').click(function() {
+		$(this).hide();
 		var move_options = {
-		    'type' : 'move',
-		    'options' : {
-		       'lat' : moveLatLng.lat(),
-		       'lng' : moveLatLng.lng()
-		    }
-		}
+			'type' : 'move',
+			'options' : {
+				'lat' : moveLatLng.lat(),
+				'lng' : moveLatLng.lng()
+			}
+		};
 		//Requete ajax de l'envoie des nouvelle coordonnées
 		$.ajax({
 			url : '/action',
@@ -66,7 +86,6 @@ $(document).ready(function() {
 			data : JSON.stringify(move_options)
 		}).done(function(data) {
 			//Action en cas de succes
-			$("#mouse_context_move").hide();
 		}).fail(function(data) {
 			//Action en cas d'échec
 		});

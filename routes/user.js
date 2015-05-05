@@ -42,7 +42,7 @@ router.route('/neighboors')
 			.exec(function(err, neighboors) {
 				if (err) {
 					console.log(err);
-					return res.status(400).send();
+					return res.status(500).send();
 				}
 
 				// Build neighboors array
@@ -71,7 +71,7 @@ router.route('/inventory')
 			.exec(function(err, inventory) {
 				if (err) {
 					console.log(err);
-					return res.status(400).send();
+					return res.status(500).send();
 				}
 				res.send(inventory);
 			});
@@ -83,10 +83,30 @@ router.route('/inventory')
 			function(err) {
 				if (err) {
 					console.log(err);
-					return res.status(400).send();
+					return res.status(500).send();
 				}
 				res.status(200).send();
 			});
+	});
+
+
+//
+// Current user's position
+//
+router.route('/position')
+
+	// GET position
+	.get(isLoggedIn, function(req, res) {
+		User.findOne({ '_id' : req.user['_id']}, 'lat lng', function(err, user) {
+			if(err) {
+				console.log(err);
+				return res.status(500).send();
+			}
+			res.status(200).send({
+				'lat' : user.lat,
+				'lng' : user.lng
+			});
+		});
 	});
 
 
@@ -100,7 +120,7 @@ router.route('/action')
 		Action.findOne({ '_id': req.user['_id'] }, function(err, action) {
 			if (err) {
 				console.log(err);
-				return res.status(400).send();
+				return res.status(500).send();
 			}
 			res.status(200).send(action);
 		});
@@ -109,25 +129,36 @@ router.route('/action')
 	// POST next action
 	.post(isLoggedIn, function(req, res) {
 
-		// First, check for user's action
-
 		// Move action
 		if(req.body['type'] === 'move' &&
 			req.body['options'].hasOwnProperty('lat') &&
 			req.body['options'].hasOwnProperty('lng')) {
 
+				// Check if user's action is valid
+				// i.e., if user can reach the required position
+				// PS : this DOES NOT work
+				var everythingsOk = false;
+				if((req.body['options']['lat'] - req.user.lat) * (req.body['options']['lat'] - req.user.lat) +
+					(req.body['options']['lng'] - req.user.lng) * (req.body['options']['lng'] - req.user.lng) <
+					req.user.features.endurance * req.user.features.endurance)
+					everythingsOk = true;
+
+				console.log(everythingsOk);
+
 				// Update database with user's new move
-				Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, {
+				if(everythingsOk) {
+					Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, {
 						'options.lat' : req.body['options']['lat'],
 						'options.lng' : req.body['options']['lng']
 					}, { 'upsert' : true, 'new' : true },
 					function(err, action) {
 						if (err) {
 							console.log(err);
-							return res.status(400).send();
+							return res.status(500).send();
 						}
 						res.status(200).send();
 					});
+				} else return res.status(400).send();
 		}
 
 		// Fight action
