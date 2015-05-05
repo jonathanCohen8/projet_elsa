@@ -3,6 +3,7 @@ html
 	width:100%;
 	height:100%;
 	margin:0;
+	background: rgb(25,29,32);
 }
 
 body
@@ -11,6 +12,44 @@ body
 	height:100%;
 	margin:0;
 	overflow: hidden;
+}
+
+#login{
+	background-image:url(../images/tesseract.jpg);
+	background-repeat:no-repeat;
+	background-size: 80%;
+	background-position:center bottom;
+	height: 100%;
+	text-align: center;
+}
+
+#login h1{
+	color: white;
+	font-size: 50px;
+}
+
+#login form{
+	display: inline;
+	width: 100%;
+}
+
+#login form input{
+	color: rgb(70,70,70);
+	margin-bottom: 5px;
+	background:rgba(255,255,255,0.8);
+	border: solid 1px gray;
+	border-radius: 2px 2px 2px 2px;
+	text-align: center;
+}
+
+#login form button{
+	margin-bottom: 5px;	
+	background:rgb(255,255,255,0.8);
+	border: solid 1px gray;
+	border-radius: 2px 2px 2px 2px;
+	text-align: center;
+	width: 150px;
+	height: 50px;
 }
 
 #map_canvas{
@@ -221,5 +260,19 @@ body
 		width: auto;
 		left:30%;
 		right:30%;
+	}
+
+	#login{
+		background-size: 30%;
+	}
+
+	#login h1{
+		font-size: 80px;
+	}
+
+	#login form input{
+		font-size: 30px;
+		width: 20%;
+		height:50px;
 	}
 }
