@@ -54,7 +54,7 @@ router.route('/neighboors')
 						lng : neighboors[n]['lng']
 					});
 				}
-				res.send(otherUsers);
+				res.status(200).send(otherUsers);
 			});
 	});
 
@@ -148,6 +148,7 @@ router.route('/action')
 				// Update database with user's new move
 				if(everythingsOk) {
 					Action.findOneAndUpdate({ 'idUser': req.user['_id'] }, {
+						'type' : req.body['type'],
 						'options.lat' : req.body['options']['lat'],
 						'options.lng' : req.body['options']['lng']
 					}, { 'upsert' : true, 'new' : true },
@@ -160,7 +161,7 @@ router.route('/action')
 					});
 				} else return res.status(400).send();
 		}
-
+		
 		// Fight action
 		else if(req.body['type'] === 'fight' &&
 			req.body['options'].hasOwnProperty('idEnemy')) {

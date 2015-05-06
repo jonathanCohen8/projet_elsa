@@ -7,14 +7,14 @@ $(document).ready(function() {
 	initialize();
 
 	//Connection au socket io
-	var socket = io.connect('http://localhost:3000');
+	var socket = io();//.connect('http://localhost:3000');
 	socket.on('timer', function(timer) {
 		//Execution de l'affichage du timer en temps réel
 		// alert("execution du socket");
-		$("#timer").html('Temps restant avant prochain tour: ' + timer.timer + ' secondes');
-		color_timer(Math.round((timer.timer*100)/timer.max));
+		$("#timer").html('Temps restant avant prochain tour: ' + timer.timeLeft + ' secondes');
+		color_timer(Math.round((timer.timeLeft*100)/timer.timeMax));
 
-		if(timer.timer === 0) {
+		if(timer.timeLeft === 0) {
 
 			// GET new position
 			$.get('/position')

@@ -8,6 +8,7 @@
 //
 
 var express      = require('express');
+var socketio     = require('socket.io');
 var path         = require('path');
 var favicon      = require('serve-favicon');
 var logger       = require('morgan');
@@ -24,8 +25,9 @@ mongoose.connect('mongodb://195.154.71.91:1723/projet_elsa');
 var db = mongoose.connection;
 
 
-// Express app
+// Express app & socket.io
 var app = express();
+app.set('io', socketio());
 
 
 // View engine
@@ -66,6 +68,15 @@ app.use(function(req, res, next){
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/user'));
+
+
+// Start game
+var game = new Game({
+    'cycle' : 0,
+    'max'   : 60,
+    'timer' : 60
+});
+game.start(app.get('io'));
 
 
 // Catch 404 and forward to error handler
