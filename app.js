@@ -73,8 +73,8 @@ app.use('/', require('./routes/user'));
 // Start game
 var game = new Game({
     'cycle' : 0,
-    'max'   : 60,
-    'timer' : 60
+    'max'   : 10,
+    'timer' : 10
 });
 game.start(app.get('io'));
 
