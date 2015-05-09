@@ -52,13 +52,9 @@ function initialize() {
 			}*/
 		]
 	};
-<<<<<<< HEAD
-	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-	
-=======
-	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
->>>>>>> origin/master
+	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
 	//gestion label pour le marker
 	google.maps.Marker.prototype.setLabel = function(label){
         this.label = new MarkerLabel({
@@ -248,6 +244,6 @@ function initialize() {
 function actualizePlayerPosition(playerPosition){
 	var newLatlng = new google.maps.LatLng(playerPosition.lat,playerPosition.lng);
 	avatar.setPosition(newLatlng);
-	moveCircle.setPosition(newLatlng);
+	moveCircle.setCenter(newLatlng);
     map.panTo(newLatlng);
 }

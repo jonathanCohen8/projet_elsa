@@ -17,23 +17,25 @@ $(document).ready(function() {
 		$("#timer").html('Temps restant avant prochain tour: ' + timer.timeLeft + ' secondes');
 		color_timer(Math.round((timer.timeLeft*100)/timer.timeMax));
 
-		if(timer.timeLeft === 0) {
+    });
 
-			// GET new position
-			$.get('/position')
-				.done(function(data) {
-					actualizePlayerPosition(data);
-				}).fail(function(err) {
-					console.log(err);
-				});
+	//Mise à jour de la position des joueurs
+    socket.on('updated', function(){
+		// GET new position
+		$.get('/position')
+		.done(function(data) {
+			actualizePlayerPosition(data);
+		}).fail(function(err) {
+			console.log(err);
+		});
 
-			// GET neighboors positions
-			$.get('/neighboors')
-				.done(function(data) {
-				}).fail(function(err) {
-					console.log(err);
-				});
-		}
+		// GET neighboors positions
+		$.get('/neighboors')
+		.done(function(data) {
+		}).fail(function(err) {
+			console.log(err);
+		});
+
     });
 
 	//Colorisation fiche statistique
