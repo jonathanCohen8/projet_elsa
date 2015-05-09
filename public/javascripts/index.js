@@ -1,5 +1,8 @@
 var table = user.inventory.order;
 var moveLatLng;
+var avatar;
+var map;
+var moveCircle;
 
 //Initialisation
 $(document).ready(function() {
@@ -19,7 +22,7 @@ $(document).ready(function() {
 			// GET new position
 			$.get('/position')
 				.done(function(data) {
-					console.log(data);
+					actualizePlayerPosition(data);
 				}).fail(function(err) {
 					console.log(err);
 				});
@@ -27,7 +30,6 @@ $(document).ready(function() {
 			// GET neighboors positions
 			$.get('/neighboors')
 				.done(function(data) {
-					console.log(data);
 				}).fail(function(err) {
 					console.log(err);
 				});

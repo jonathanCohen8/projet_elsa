@@ -48,7 +48,7 @@ function initialize() {
 		]}
 		]
 	};
-	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 	
 	//gestion label pour le marker
 	google.maps.Marker.prototype.setLabel = function(label){
@@ -89,7 +89,7 @@ function initialize() {
 		origin: new google.maps.Point(0,0),
 		anchor: new google.maps.Point(30,25)
 	};
-	var avatar = new google.maps.Marker({
+	avatar = new google.maps.Marker({
 		position: myLatlng,
 		map: map,
 		icon: icon,
@@ -184,7 +184,7 @@ function initialize() {
 	*/
 
     //Ajout des cercle sur la carte
-	var moveCircle = new google.maps.Circle(moveOption);
+	moveCircle = new google.maps.Circle(moveOption);
 	//var acuityCircle = new google.maps.Polygon(acuityOptions);
 
 	//systeme click map
@@ -234,4 +234,11 @@ function initialize() {
 			}
 		}
 	}, 8);     */
+}
+
+function actualizePlayerPosition(playerPosition){
+	var newLatlng = new google.maps.LatLng(playerPosition.lat,playerPosition.lng);
+	avatar.setPosition(newLatlng);
+	moveCircle.setPosition(newLatlng);
+    map.panTo(newLatlng);
 }
