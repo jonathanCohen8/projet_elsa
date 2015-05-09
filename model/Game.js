@@ -19,7 +19,7 @@ var Game = new mongoose.Schema({
 
 
 // Update every users according to their actions
-Game.methods.update = function() {
+Game.methods.update = function(callback) {
 	User.find({}, function(err, users) {
 		users.forEach(function(user) {
 			Action.findOne({ 'idUser' : user['_id']}, function(err, action) {
@@ -38,6 +38,7 @@ Game.methods.update = function() {
 				}
 			});
 		});
+		callback();
 	});
 };
 
@@ -55,8 +56,9 @@ Game.methods.start = function(io) {
 			game.timer = game.max;
 
 			// Update every users
-			game.update();
-			io.emit('updated');
+			game.update(function() {
+				io.emit('updated');
+			});
 		}
 	}, 1000);
 };
