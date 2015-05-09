@@ -39,17 +39,21 @@ function initialize() {
 		disableDoubleClickZoom: true,
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		styles: [
-		{
-		"stylers": [
-			{ "saturation": -78 },
-			{ "gamma": 0.6 },
-			{ "lightness": 20 }
-		]}
+		styles: [{
+			"stylers": [
+				{ "saturation": -78 },
+				{ "gamma": 0.6 },
+				{ "lightness": 20 }
+			]}/*, {
+				featureType: "poi",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}*/
 		]
 	};
 	var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-	
+
 	//gestion label pour le marker
 	google.maps.Marker.prototype.setLabel = function(label){
         this.label = new MarkerLabel({

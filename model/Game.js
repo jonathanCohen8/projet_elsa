@@ -56,6 +56,7 @@ Game.methods.start = function(io) {
 
 			// Update every users
 			game.update();
+			io.emit('updated');
 		}
 	}, 1000);
 };

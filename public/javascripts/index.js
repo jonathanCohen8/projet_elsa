@@ -90,5 +90,5 @@ $(document).ready(function() {
 			//Action en cas d'échec
 		});
 	});
-
+	
 });
