@@ -48,7 +48,6 @@ router.route('/neighboors')
 				// Build neighboors array
 				var otherUsers = [];
 				for(var n in neighboors) {
-				console.log(neighboors[n]['_id']);
 					otherUsers.push({
 						'id' : neighboors[n]['_id'],
 						'name' : neighboors[n]['username'],
