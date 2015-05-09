@@ -1,6 +1,7 @@
 var table = user.inventory.order;
 var moveLatLng;
 var avatar;
+var player;
 var map;
 var moveCircle;
 
@@ -32,6 +33,7 @@ $(document).ready(function() {
 		// GET neighboors positions
 		$.get('/neighboors')
 		.done(function(data) {
+			actualizeNeighboorsPosition(data);
 		}).fail(function(err) {
 			console.log(err);
 		});

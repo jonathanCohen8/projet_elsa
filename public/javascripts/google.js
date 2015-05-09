@@ -104,7 +104,6 @@ function initialize() {
 	});
 
 	//Ajout marker des autre joueur
-	var player;
 	for (i=0; i< players.length;i++)
 	{
 		player = new google.maps.Marker({
@@ -246,4 +245,17 @@ function actualizePlayerPosition(playerPosition){
 	avatar.setPosition(newLatlng);
 	moveCircle.setCenter(newLatlng);
     map.panTo(newLatlng);
+}
+
+function actualizeNeighboorsPosition(neightboors){
+	player.setMap(null);
+	for (i=0; i< neightboors.length;i++)
+	{
+		player = new google.maps.Marker({
+			position: new google.maps.LatLng(neightboors[i]['lat'],neightboors[i]['lng']),
+			map: map,
+			label: neightboors[i].name,
+			draggable: false,
+		});
+	}
 }
