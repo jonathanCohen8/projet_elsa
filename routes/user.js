@@ -38,7 +38,7 @@ router.route('/neighboors')
 		User.find()
 			.where('_id').ne(req.user['_id'])
 			.where('lat').gt(req.user['lat'] - 1).lt(req.user['lat'] + 1)
-			.where('lng').gt(req.user['lng'] - 1).lt(req.user['lng']+ 1)
+			.where('lng').gt(req.user['lng'] - 1).lt(req.user['lng'] + 1)
 			.exec(function(err, neighboors) {
 				if (err) {
 					console.log(err);
@@ -48,10 +48,12 @@ router.route('/neighboors')
 				// Build neighboors array
 				var otherUsers = [];
 				for(var n in neighboors) {
+				console.log(neighboors[n]['_id']);
 					otherUsers.push({
-						name : neighboors[n]['username'],
-						lat : neighboors[n]['lat'],
-						lng : neighboors[n]['lng']
+						'id' : neighboors[n]['_id'],
+						'name' : neighboors[n]['username'],
+						'lat' : neighboors[n]['lat'],
+						'lng' : neighboors[n]['lng']
 					});
 				}
 				res.status(200).send(otherUsers);
